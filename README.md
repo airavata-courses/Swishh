@@ -10,8 +10,8 @@ Registered users are required to login to Swishh to upload or access already upl
 
 * React
 * SpringBoot (Java)
-* 
-* 
+* Python (Django)
+* Go
 
 ## Mockups
 
