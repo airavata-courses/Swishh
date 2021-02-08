@@ -1,6 +1,5 @@
 # Swishh
 
-![logo](https://github.com/airavata-courses/Swishh/blob/master/Images/Milestone1/SwishhLogo.png)
 
 ###                                    NAPKIN DIAGRAM
 ![alt text](https://github.com/airavata-courses/Swishh/blob/master/Images/Milestone1/Napkin%20Diagram.png)
