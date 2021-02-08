@@ -1,5 +1,7 @@
 # Swishh
 
+![logo](https://github.com/airavata-courses/Swishh/blob/master/Images/Milestone1/SwishhLogo.png)
+
 ###                                    NAPKIN DIAGRAM
 ![alt text](https://github.com/airavata-courses/Swishh/blob/master/Images/Milestone1/Napkin%20Diagram.png)
 
@@ -16,19 +18,15 @@ Registered users are required to login to Swishh to upload or access already upl
 * SpringBoot (Java)
 * Python (Django)
 * Go
-
-## Mockups
-
-A link to the mockups
+* Apache Kafka
 
 ## System architecture
 
-The detailed architecture can be found here. 
+The detailed architecture can be found [here.](https://github.com/airavata-courses/Swishh/blob/master/Images/Milestone1/SwishhArchitecture.jpg) 
 
 ## Project Milestones
 
-* Project Mile Stone 1
-
+* [Project Mile Stone 1](https://github.com/airavata-courses/Swishh/wiki/MileStone-1)
 
 
 We are a team of three Masters students from Indiana University Bloomington who are driving towards building Swishh as a part of Applied Distributed Systems course, Spring 2021. 
