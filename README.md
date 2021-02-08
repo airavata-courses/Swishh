@@ -36,6 +36,6 @@ We are a team of three Masters students from Indiana University Bloomington who 
 ## Team:
 * [Pranamya Vadlamani](https://www.linkedin.com/in/pvadlamani1/) 
 * [Hareesh Bondalapati](https://www.linkedin.com/in/bondalapatihareesh/)
-* [Sidharth Tata](https://www.linkedin.com/in/siddharth-tata-450117131/)
+* [Siddharth Tata](https://www.linkedin.com/in/siddharth-tata-450117131/)
 
 
