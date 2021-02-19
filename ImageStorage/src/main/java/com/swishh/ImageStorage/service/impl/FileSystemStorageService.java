@@ -37,15 +37,15 @@ public class FileSystemStorageService implements StorageService {
 	}
 
 	@Override
-	public void store(MultipartFile[] files) {
-//		 Path rootLocation=Paths.get(fileUploadDir);
+	public void store(MultipartFile[] files,String username) {
 		try {
+			Path uploaddirPath=Paths.get(fileUploadDir+File.separator+username);
 
 			for (MultipartFile file : files) {
 				if (file.isEmpty()) {
 					throw new StorageException("Failed to store empty file.");
 				}
-				Path destinationFile = rootLocation.resolve(Paths.get(file.getOriginalFilename())).normalize()
+				Path destinationFile = uploaddirPath.resolve(Paths.get(file.getOriginalFilename())).normalize()
 						.toAbsolutePath();
 				File creatFile = new File(destinationFile.toString());
 				System.out.println(destinationFile.toString() + creatFile.getAbsolutePath());

@@ -42,17 +42,8 @@ public class ImageStorageController {
 		return 	storageService.loadAll();
 	}
 
-	@GetMapping("/files/{filename:.+}")
-	@ResponseBody
-	public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
-
-		Resource file = storageService.loadAsResource(filename);
-		return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
-				"attachment; filename=\"" + file.getFilename() + "\"").body(file);
-	}
-
 	@PostMapping("/upload")
-	public String handleFileUpload(@RequestParam("file") MultipartFile[] file,
+	public String handleFileUpload(@RequestParam("file") MultipartFile[] file,@RequestParam("username") String username,
 			RedirectAttributes redirectAttributes) {
 
 		System.out.println(file.length);
@@ -61,7 +52,7 @@ public class ImageStorageController {
 			str+=files.getOriginalFilename();
 		}
 		System.out.println("files tobe stored"+str);
-		storageService.store(file);
+		storageService.store(file,username);
 		redirectAttributes.addFlashAttribute("message",
 				"You successfully uploaded " + str+  "!");
 
