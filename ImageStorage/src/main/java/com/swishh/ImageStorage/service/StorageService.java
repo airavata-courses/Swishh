@@ -16,7 +16,7 @@ public interface StorageService {
 
 	void store(MultipartFile[] file,String username);
 
-	ArrayList<byte[]> loadAll() throws Exception;
+	ArrayList<byte[]> loadAll(String username) throws Exception;
 
 	Path load(String filename);
 
