@@ -32,7 +32,7 @@ public class FileSystemStorageService implements StorageService {
 	private Path rootLocation;
 	@PostConstruct
 	private void initPrams() {
-		rootLocation = Paths.get(fileUploadDir);
+		rootLocation = Paths.get(File.pathSeparator+fileUploadDir);
 
 	}
 
