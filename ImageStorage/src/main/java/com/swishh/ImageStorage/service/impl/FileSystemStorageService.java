@@ -52,7 +52,7 @@ public class FileSystemStorageService implements StorageService {
 				if (!creatFile.exists()) {
 					System.out.println(creatFile.getAbsolutePath());
 					File uploaddir = new File(
-							creatFile.getAbsolutePath().substring(0, creatFile.getAbsolutePath().lastIndexOf('\\')));
+							creatFile.getAbsolutePath().substring(0, creatFile.getAbsolutePath().lastIndexOf(File.separatorChar)));
 					uploaddir.mkdirs();
 					creatFile.createNewFile();
 				}
@@ -71,10 +71,7 @@ public class FileSystemStorageService implements StorageService {
 
 	@Override
 	public ArrayList<byte[]> loadAll() throws IOException {
-		Resource resource = null;
-//		final Path rootLocation=Paths.get(fileUploadDir);
 		ArrayList<byte[]> filesList = new ArrayList<byte[]>();
-		ArrayList<File> files = new ArrayList<File>();
 		File dir = new File(rootLocation.toString());
 		try {
 			if (dir.exists() && dir.isDirectory()) {
@@ -94,7 +91,6 @@ public class FileSystemStorageService implements StorageService {
 
 	@Override
 	public Path load(String filename) {
-//		final Path rootLocation=Paths.get(fileUploadDir);
 		return rootLocation.resolve(filename);
 	}
 
@@ -116,13 +112,11 @@ public class FileSystemStorageService implements StorageService {
 
 	@Override
 	public void deleteAll() {
-//		 final Path rootLocation=Paths.get(fileUploadDir);
 		FileSystemUtils.deleteRecursively(rootLocation.toFile());
 	}
 
 	@Override
 	public void init() {
-//		final Path rootLocation=Paths.get(fileUploadDir);
 		try {
 			Files.createDirectories(rootLocation);
 		} catch (IOException e) {
