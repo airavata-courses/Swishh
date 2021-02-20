@@ -57,9 +57,7 @@ public class FileSystemStorageService implements StorageService {
 					creatFile.createNewFile();
 				}
 
-				if (!destinationFile.getParent().equals(rootLocation.toAbsolutePath())) {
-					;
-				}
+				
 				try (InputStream inputStream = file.getInputStream()) {
 					Files.copy(inputStream, destinationFile, StandardCopyOption.REPLACE_EXISTING);
 				}
