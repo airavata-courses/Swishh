@@ -1,23 +1,12 @@
 /*eslint-disable*/
 import React from "react";
-import DeleteIcon from "@material-ui/icons/Delete";
-import IconButton from "@material-ui/core/IconButton";
-// react components for routing our app without refresh
-import { Link } from "react-router-dom";
-
+import axios from 'axios';
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import Slide from "@material-ui/core/Slide";
 import ListItem from "@material-ui/core/ListItem";
 import Tooltip from "@material-ui/core/Tooltip";
-import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogActions from "@material-ui/core/DialogActions";
-import Typography from '@material-ui/core/Typography';
-
-
 // @material-ui/icons
 import PublishIcon from '@material-ui/icons/Publish';
 import Close from "@material-ui/icons/Close";
@@ -37,7 +26,18 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 Transition.displayName = "Transition";
 export default function HeaderLinks(props) {
   const classes = useStyles();
-  const [classicModal, setClassicModal] = React.useState(false);
+
+    const hiddenFileInput = React.useRef(null);
+
+    const handleChange = event => {
+      const fileUploaded = event.target.files[0];
+      console.log(fileUploaded);
+      axios.post('http://localhost:8080/upload', fileUploaded)
+      .then(function (response) {
+        console.log(response);
+      })
+    };
+
   return (
     <List className={classes.list}>
       <ListItem className={classes.listItem}>
@@ -66,7 +66,6 @@ export default function HeaderLinks(props) {
           placement={window.innerWidth > 959 ? "top" : "left"}
           classes={{ tooltip: classes.tooltip }}
         >
-         
           <Button
             target="_blank"
             color="transparent"
@@ -74,11 +73,15 @@ export default function HeaderLinks(props) {
             variant="contained"
             component="label"
           >
-
+            
             <PublishIcon fontSize="large" />
             <input
-              type="file"
+              // type="file"
               hidden
+              type="file"
+              ref={hiddenFileInput}
+              onChange={handleChange}
+              // style={{display: 'none'}}
             />
           </Button>
         </Tooltip>
