@@ -47,5 +47,14 @@ public class SessionService {
 		return true;
 	}
 	
+	public String invalidateSession(String sessionId){
+		SessionEntity entity=sessionRepository.findBySessionId(sessionId);
+		if(entity!=null) {
+			entity.setTimeout(0);
+			sessionRepository.save(entity);
+		}
+		
+		return "Succesfully logged out";
+	}
 
 }
