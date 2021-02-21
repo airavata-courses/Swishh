@@ -36,5 +36,13 @@ public class SessionController {
 		}
 		return false;
 	}
+	@PostMapping("/invalidate")
+	public String invalidateSession(@RequestBody String body) {
+		String sessionId=(String) new Gson().fromJson(body, Map.class).get("sessionId");
+		if(sessionId!=null) {
+			return sessionService.invalidateSession(sessionId);
+		}
+		return "Problem occurred while logout. Please login again";
+	}
 
 }
