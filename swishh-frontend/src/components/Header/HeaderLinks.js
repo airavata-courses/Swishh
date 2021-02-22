@@ -28,14 +28,28 @@ export default function HeaderLinks(props) {
   const classes = useStyles();
 
     const hiddenFileInput = React.useRef(null);
-
+    const handleClick = () => {
+      console.log("signed out");
+      console.log("Invalidated token successfully!");
+      localStorage.clear();
+      window.location.href = '/';
+    };
     const handleChange = event => {
       const fileUploaded = event.target.files[0];
+      const username = localStorage.getItem(username);
       console.log(fileUploaded);
-      axios.post('http://localhost:8080/upload', fileUploaded)
-      .then(function (response) {
+
+      let formData = new FormData();
+      formData.append("file", fileUploaded);
+      formData.append('username',username);
+
+      axios.post('http://localhost:8080/upload/', formData ,{
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        }
+      }).then(function (response) {
         console.log(response);
-      })
+      });
     };
 
   return (
@@ -56,7 +70,7 @@ export default function HeaderLinks(props) {
             <a href='/profile-page'>Contact us</a>,
             <a href='/profile-page'>Settings</a>,
             { divider: true },
-            <a href='/'>Sign out</a>,
+            <a onClick={() => {handleClick()}}>Sign out</a>,
           ]}
         />
       </ListItem>

@@ -6,6 +6,9 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import Icon from "@material-ui/core/Icon";
 // @material-ui/icons
 import Email from "@material-ui/icons/Email";
+import People from "@material-ui/icons/People";
+// react components for routing our app without refresh
+import { Link } from "react-router-dom";
 // core components
 import Header from "components/Header/Header.js";
 import HeaderLinks from "components/Header/HeaderLinks.js";
@@ -25,34 +28,35 @@ import image from "assets/img/bg7.jpg";
 
 const useStyles = makeStyles(styles);
 
-export default function LoginPage(props) {
+
+export default function RegisterPage(props) {
   const [cardAnimaton, setCardAnimation] = React.useState("cardHidden");
+  const [firstName, setFirstName] = React.useState('');
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] =  React.useState('');
   setTimeout(function() {
     setCardAnimation("");
   }, 700);
   const classes = useStyles();
   const { ...rest } = props;
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] =  React.useState('');
-  const ACCESS_TOKEN_NAME = 'login_access_token';
   const handleClick = () => {
+    console.log(firstName);
     console.log(email);
     console.log(password);
     const payload={
-      "username":email,
-      "password" : password
+    "username":email,
+    "password" : password
     }
-    axios.post('http://localhost:5000/auth', payload, {
+
+    axios.post('http://localhost:5000/register', payload, {
     })
     .then((response) => {
         setTimeout(()=> props.history.push('/profile-page'), 2000);
-        localStorage.setItem(ACCESS_TOKEN_NAME, response.data.access_token);
-        localStorage.setItem('username', email);
     })
     .catch((error) => {
         console.log(error)
     })
-  };
+   }
   return (
     <div>
       <Header
@@ -77,7 +81,7 @@ export default function LoginPage(props) {
               <Card className={classes[cardAnimaton]}>
                 <form className={classes.form}>
                   <CardHeader color="primary" className={classes.cardHeader}>
-                    <h4>Login</h4>
+                    <h4>Register</h4>
                     <div className={classes.socialLine}>
                       <Button
                         justIcon
@@ -108,7 +112,27 @@ export default function LoginPage(props) {
                       </Button>
                     </div>
                   </CardHeader>
+                  <p className={classes.divider}>Or Be Classical</p>
                   <CardBody>
+                    <CustomInput
+                      labelText="First Name..."
+                      id="first"
+                    
+                      formControlProps={{
+                        fullWidth: true
+                      }}
+                      inputProps={{
+                        type: "text",
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <People className={classes.inputIconsColor} />
+                          </InputAdornment>
+                        )
+                      }}
+                    onChange= {event =>
+                        setFirstName(event.target.value)}
+                      
+                    />
                     <CustomInput
                       labelText="Email..."
                       id="email"
@@ -123,9 +147,8 @@ export default function LoginPage(props) {
                           </InputAdornment>
                         )
                       }}
-                      value={email}
-                      onChange={event => setEmail(event.target.value)}
-                      
+                      onChange= {event =>
+                        setEmail(event.target.value)}
                     />
                     <CustomInput
                       labelText="Password"
@@ -144,17 +167,16 @@ export default function LoginPage(props) {
                         ),
                         autoComplete: "off"
                       }}
-                      value={password}
-                      onChange={event => setPassword(event.target.value)}
+                      onChange= {event =>
+                        setPassword(event.target.value)}
                     />
                   </CardBody>
                   <CardFooter className={classes.cardFooter}>
-                    <Button simple color="primary" size="lg"  onClick={() => {handleClick()}}>
-                      Login
-                    </Button>
-                    
-                    <Button simple color="primary" size="lg" href='/register-page'>
+                    <Button simple color="primary" size="lg" onClick={() => {handleClick()}}>
                       Register
+                    </Button>
+                    <Button simple color="primary" size="lg" href='/login-page'>
+                      Login
                     </Button>
                   </CardFooter>
                 </form>
