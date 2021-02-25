@@ -19,40 +19,9 @@ import studio4 from "assets/img/examples/studio-4.jpg";
 import studio5 from "assets/img/examples/studio-5.jpg";
 
 import styles from "assets/jss/material-kit-react/views/profilePage.js";
+import axios from "axios";
 
 const useStyles = makeStyles(styles);
-const tileData = [
-{
-img: studio2,
-title: 'Image',
-author: 'author',
-},
-{
-img: studio2,
-title: 'Image',
-author: 'author',
-},
-{
-img: studio2,
-title: 'Image',
-author: 'author',
-},
-{
-img: studio2,
-title: 'Image',
-author: 'author',
-},
-{
-img: studio2,
-title: 'Image',
-author: 'author',
-},
-{
-img: studio2,
-title: 'Image',
-author: 'author',
-},
-];
 
 export default function ProfilePage(props) {
   const classes = useStyles();
@@ -63,6 +32,38 @@ export default function ProfilePage(props) {
     classes.imgFluid
   );
   const navImageClasses = classNames(classes.imgRounded, classes.imgGallery);
+  const [images, setImages] = React.useState([]);
+  const [username, setUserName] = React.useState('');
+  const [isLoggedInUser, setIsLoggedInUser] = React.useState(false);
+
+  React.useEffect(() => {
+    // const username = localStorage.getItem('username');
+    // const sessionId = localStorage.getItem('sessionId');
+    // const sessionPayload = {
+    //   "username": username,
+    //   "sessionId" : sessionId
+    // }
+
+    // axios.post('http://localhost:8080/validate', sessionPayload)
+    //   .then(function (response) {
+    //     setIsLoggedInUser(response.data);
+    // });
+
+    //if (isLoggedInUser) {
+    if(localStorage.getItem('sessionId') != null){
+
+      setUserName(localStorage.getItem('username'));
+      axios.get('http://localhost:8081/files?username=' + localStorage.getItem('username'))
+        .then(function (response) {
+          setImages(response.data);
+        });
+    }
+    else {
+      window.alert("You are not logged in. Please sign out and sign in to continue.");
+      setTimeout(()=> props.history.push('/'), 2000);
+    }
+  }, [])
+
   return (
     <div>
       <Header
@@ -87,7 +88,7 @@ export default function ProfilePage(props) {
                     <img src={profile} alt="..." className={imageClasses} />
                   </div>
                   <div className={classes.name}>
-                    <h3 className={classes.title}>Christian Louboutin</h3>
+                    <h3 className={classes.title}>{username}</h3>
                   </div>
                 </div>
               </GridItem>
@@ -100,9 +101,16 @@ export default function ProfilePage(props) {
                 feel with a solid groove structure.{" "}
               </p>
             </div>
-            
+
             <GridContainer >
               <GridItem xs={12} sm={12} md={4}>
+                {images.map((image) => (
+                  <img
+                    alt="..."
+                    src={'data:image/jpeg;base64,' + image}
+                    className={navImageClasses}
+                  />
+                ))}
                 <img
                   alt="..."
                   src={studio1}

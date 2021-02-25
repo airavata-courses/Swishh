@@ -35,6 +35,7 @@ export default function LoginPage(props) {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] =  React.useState('');
   const ACCESS_TOKEN_NAME = 'login_access_token';
+
   const handleClick = () => {
     console.log(email);
     console.log(password);
@@ -42,12 +43,25 @@ export default function LoginPage(props) {
       "username":email,
       "password" : password
     }
+    const sessionPayload={
+      "username":email
+    }
+
     axios.post('http://localhost:5000/auth', payload, {
     })
     .then((response) => {
         setTimeout(()=> props.history.push('/profile-page'), 2000);
         localStorage.setItem(ACCESS_TOKEN_NAME, response.data.access_token);
         localStorage.setItem('username', email);
+    })
+    .catch((error) => {
+        console.log(error)
+    })
+
+    axios.post('http://localhost:8080/session', sessionPayload)
+    .then((response) => {
+      console.log(response.data);
+      localStorage.setItem('sessionId', response.data);
     })
     .catch((error) => {
         console.log(error)
