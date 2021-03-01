@@ -6,12 +6,15 @@ from flask_restful import Resource, Api, reqparse
 from flask_jwt import JWT, jwt_required
 from security import authenticate, identity
 from user import UserRegister
+from flask_cors import CORS, cross_origin
 
 
 
 app = Flask(__name__)
-
+cors  = CORS(app)
+app.config['CORS_HEADERS'] = 'Content_Type'
 app.secret_key =  'jose'
+
 
 # Here the Api is imported from flask_restful
 # This will allow us to easily add the resourses to it. For an instance we can say " For a Resourse we can GET and POST"
@@ -44,7 +47,7 @@ class Item(Resource):
         #    if item['name'] == name:
         #        return item
         # Here the 404 is the http status code which the searched item is not found
-
+    @cross_origin()
     def post(self,name):
         # Using the parser object that was declared as global in the class.
         data = Item.parser.parse_args()
