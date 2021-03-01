@@ -7,9 +7,7 @@ jobs:
     working_directory: ~/repo
     steps:
       - checkout
-      - run: cd ImageStorage
-      - run: ls -la
-      - run: mvn dependency:go-offline
+      - run: cd ImageStorage && ls -la && mvn dependency:go-offline
 
       # package into a jar
       - run: /imagestorage/mvn clean package
