@@ -8,13 +8,13 @@ jobs:
     steps:
       - checkout
 
-      - run: /imagestorage/mvn dependency:go-offline
+      - run: ./imagestorage/mvn dependency:go-offline
 
       # package into a jar
-      - run: /imagestorage/mvn clean package
+      - run: ./imagestorage/mvn clean package
 
       # build and push docker image to docker hub
-      - run: /imagestorage/mvn clean compile jib:build -Dimage=swishh/imagestorage:$CIRCLE_BUILD_NUM
+      - run: ./imagestorage/mvn clean compile jib:build -Dimage=swishh/imagestorage:$CIRCLE_BUILD_NUM
 
       # store raw contents of src code
       - store_artifacts:
