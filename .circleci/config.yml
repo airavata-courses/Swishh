@@ -8,6 +8,7 @@ jobs:
     steps:
       - checkout
       - run: cd ImageStorage
+      - run: ls -la
       - run: mvn dependency:go-offline
 
       # package into a jar
