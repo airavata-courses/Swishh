@@ -8,8 +8,8 @@ jobs:
     steps:
       - checkout
       - run: cd ImageStorage
-      - run: ls -la
-      - run: /imagestorage/mvn dependency:go-offline
+             ls -la
+             mvn dependency:go-offline
 
       # package into a jar
       - run: /imagestorage/mvn clean package
