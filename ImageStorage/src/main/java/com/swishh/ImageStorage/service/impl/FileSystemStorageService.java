@@ -67,7 +67,6 @@ public class FileSystemStorageService implements StorageService {
 					throw new StorageException("Failed to store empty file.");
 				}
 				String fileExtension=file.getContentType().substring(file.getContentType().lastIndexOf('/')+1);
-				System.out.println(fileExtension);
 				String filename=UUID.randomUUID().toString()+"."+fileExtension;
 				if(folder!=null&&!folder.trim().equalsIgnoreCase("")) {
 					filesList.add(folder+File.separator+filename);
@@ -84,7 +83,6 @@ public class FileSystemStorageService implements StorageService {
 					creatFile.createNewFile();
 				}
 
-				System.out.println(destinationFile);
 				try (InputStream inputStream = file.getInputStream()) {
 					Files.copy(inputStream, destinationFile, StandardCopyOption.REPLACE_EXISTING);
 				}

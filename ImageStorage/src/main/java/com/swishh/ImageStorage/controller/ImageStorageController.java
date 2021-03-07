@@ -37,7 +37,6 @@ public class ImageStorageController {
 			@RequestParam("foldername") String foldername){
 
 		try{
-			System.err.println(foldername.length());
 			storageService.store(file,username,foldername);
 		}
 		catch(StorageException E) {
