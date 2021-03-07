@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.swishh.ImageStorage.exception.StorageException;
 import com.swishh.ImageStorage.exception.StorageFileNotFoundException;
@@ -33,11 +32,12 @@ public class ImageStorageController {
 	}
 
 	@PostMapping("/upload")
-	public ResponseEntity handleFileUpload(@RequestParam("file") MultipartFile[] file,@RequestParam("username") String username,
-			RedirectAttributes redirectAttributes) {
+	public ResponseEntity handleFileUpload(@RequestParam("file") MultipartFile[] file,
+			@RequestParam("username") String username,
+			@RequestParam("foldername") String foldername){
 
 		try{
-			storageService.store(file,username);
+			storageService.store(file,username,foldername);
 		}
 		catch(StorageException E) {
 			ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
