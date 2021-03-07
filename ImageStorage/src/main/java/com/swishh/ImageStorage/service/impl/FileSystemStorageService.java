@@ -9,9 +9,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -21,6 +24,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.swishh.ImageStorage.exception.StorageException;
 import com.swishh.ImageStorage.exception.StorageFileNotFoundException;
+import com.swishh.ImageStorage.models.FilesDao;
+import com.swishh.ImageStorage.models.UserDAO;
+import com.swishh.ImageStorage.service.IFileService;
+import com.swishh.ImageStorage.service.IUserService;
 import com.swishh.ImageStorage.service.StorageService;
 
 @Service
@@ -30,6 +37,13 @@ public class FileSystemStorageService implements StorageService {
 	private String fileUploadDir;
 
 	private Path rootLocation;
+	
+	@Autowired 
+	private IUserService userService; 
+	
+	@Autowired
+	private IFileService fileService;
+	
 	@PostConstruct
 	private void initPrams() {
 		rootLocation = Paths.get(File.pathSeparator+fileUploadDir);
@@ -37,15 +51,30 @@ public class FileSystemStorageService implements StorageService {
 	}
 
 	@Override
-	public void store(MultipartFile[] files,String username) {
+	public void store(MultipartFile[] files,String username,String folder) {
+		
 		try {
-			Path uploaddirPath=Paths.get(fileUploadDir+File.separator+username);
-
+			String userId=getUserIdFromUserName(username);
+			List<String> filesList=new ArrayList<String>();
+			String filepath=fileUploadDir+File.separator+userId;
+			if(folder!=null&&folder.trim()!="") {
+				filepath=filepath+File.separator+folder;
+				
+			}
+			Path uploaddirPath=Paths.get(filepath);
 			for (MultipartFile file : files) {
 				if (file.isEmpty()) {
 					throw new StorageException("Failed to store empty file.");
 				}
-				Path destinationFile = uploaddirPath.resolve(Paths.get(file.getOriginalFilename())).normalize()
+				String fileExtension=file.getContentType().substring(file.getContentType().lastIndexOf('/')+1);
+				System.out.println(fileExtension);
+				String filename=UUID.randomUUID().toString()+"."+fileExtension;
+				if(folder!=null&&!folder.trim().equalsIgnoreCase("")) {
+					filesList.add(folder+File.separator+filename);
+				}else {
+					filesList.add(filename);
+				}
+				Path destinationFile = uploaddirPath.resolve(Paths.get(filename)).normalize()
 						.toAbsolutePath();
 				File creatFile = new File(destinationFile.toString());
 				if (!creatFile.exists()) {
@@ -55,11 +84,12 @@ public class FileSystemStorageService implements StorageService {
 					creatFile.createNewFile();
 				}
 
-				
+				System.out.println(destinationFile);
 				try (InputStream inputStream = file.getInputStream()) {
 					Files.copy(inputStream, destinationFile, StandardCopyOption.REPLACE_EXISTING);
 				}
 			}
+			saveFileIdsToDB(userId, filesList);
 		} catch (IOException e) {
 			throw new StorageException("Failed to store file.", e);
 		}
@@ -67,7 +97,8 @@ public class FileSystemStorageService implements StorageService {
 
 	@Override
 	public ArrayList<byte[]> loadAll(String username) throws IOException {
-		Path filePath=Paths.get(fileUploadDir+File.separator+username);
+		String userId=getUserIdFromUserName(username);
+		Path filePath=Paths.get(fileUploadDir+File.separator+userId);
 		ArrayList<byte[]> filesList = new ArrayList<byte[]>();
 		File dir = new File(filePath.toString());
 		try {
@@ -119,5 +150,35 @@ public class FileSystemStorageService implements StorageService {
 		} catch (IOException e) {
 			throw new StorageException("Could not initialize storage", e);
 		}
+	}
+	
+	private String getUserIdFromUserName(String username) {
+		String userId=null;
+		UserDAO user=userService.getUserRecord(username);
+		if(user==null||user.getUserid()==null) {
+			userId=UUID.randomUUID().toString();
+			user=new UserDAO();
+			user.setUserid(userId);
+			user.setUsername(username);
+			userService.saveUserRecord(user);
+		}else {
+			userId=user.getUserid();
+		}
+		return userId;
+	}
+	
+	private void saveFileIdsToDB(String userid,List<String> fileids) {
+		FilesDao userFile=fileService.getUserFiles(userid);
+		if(userFile==null) {
+			userFile=new FilesDao();
+			userFile.setUserId(userid);
+			userFile.setFileids(fileids);
+		}else {
+			List<String> ids=userFile.getFileids();
+			ids.addAll(fileids);
+			userFile.setFileids(ids);
+		}
+		fileService.updateUserFiles(userFile);
+		
 	}
 }
