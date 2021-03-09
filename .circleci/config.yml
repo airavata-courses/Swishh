@@ -10,7 +10,7 @@ jobs:
           version: 19.03.13
       - checkout
       - run: cd ImageStorage && ls -la && mvn dependency:go-offline&&mvn clean package
-      - run: cd ImageStorage && ls -la && docker build -t .
+      - run: cd ImageStorage && ls -la && docker build -t latest .
 
       # store raw contents of src code
       - store_artifacts:
