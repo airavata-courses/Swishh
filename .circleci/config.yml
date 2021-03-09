@@ -7,7 +7,7 @@ jobs:
     working_directory: ~/repo
     steps:
       - setup_remote_docker:
-          version: 19.03.13
+          version: 18.09.3
       - checkout
       - run: pwd
       - run: cd ImageStorage && ls -la && mvn dependency:go-offline&&mvn clean package && docker build . -f /home/circleci/repo/ImageStorage/Dockerfile
