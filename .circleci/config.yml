@@ -9,7 +9,7 @@ jobs:
       - setup_remote_docker:
           version: 19.03.13
       - checkout
-      - run: dir
+      - run: pwd
       - run: cd ImageStorage && ls -la && mvn dependency:go-offline&&mvn clean package
       - run: cd ImageStorage && ls -la && docker build -t latest .
 
