@@ -4,6 +4,7 @@ jobs:
   build:
     docker:
       - image: circleci/openjdk:8-jdk
+    machine:true
     working_directory: ~/repo
     steps:
       - checkout
