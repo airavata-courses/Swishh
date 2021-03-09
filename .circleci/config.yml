@@ -7,7 +7,7 @@ jobs:
     working_directory: ~/repo
     steps:
       - setup_remote_docker:
-        version: 19.03.13
+          version: 19.03.13
       - checkout
       - run: cd ImageStorage && ls -la && mvn dependency:go-offline&&mvn clean package
       - run: cd ImageStorage && ls -la && docker build .
