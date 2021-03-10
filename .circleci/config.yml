@@ -11,7 +11,7 @@ jobs:
       - checkout
       - run: pwd
       - run: docker login --username $DOCKER_USER --password $DCOKER_PASS
-      - run: cd ImageStorage && ls -la && mvn clean install package && docker image build . -t image-storage:latest && docker push image-storage:latest
+      - run: cd ImageStorage && ls -la && mvn clean install package && docker image build . -t harihareeshb/image-storage:latest && docker push harihareeshb/image-storage:latest
 
       # store raw contents of src code
       - store_artifacts:
