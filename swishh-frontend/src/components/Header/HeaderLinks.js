@@ -9,7 +9,6 @@ import ListItem from "@material-ui/core/ListItem";
 import Tooltip from "@material-ui/core/Tooltip";
 // @material-ui/icons
 import PublishIcon from '@material-ui/icons/Publish';
-import Close from "@material-ui/icons/Close";
 
 // core components
 import CustomDropdown from "components/CustomDropdown/CustomDropdown.js";
@@ -35,7 +34,7 @@ export default function HeaderLinks(props) {
       console.log("Invalidated token successfully!");
       localStorage.clear();
       window.location.href = '/';
-      axios.post('http://localhost:8080/invalidate', sessionPayload)
+      axios.post('http://localhost:8082/invalidate', sessionPayload)
       .then(function (response) {
         console.log(response.data)
       });
@@ -68,6 +67,7 @@ export default function HeaderLinks(props) {
           }
         }).then(function (response) {
           console.log(response);
+          window.location.reload();
         });
       }
       else{

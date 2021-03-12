@@ -58,7 +58,7 @@ export default function LoginPage(props) {
         console.log(error)
     })
 
-    axios.post('http://localhost:8080/session', sessionPayload)
+    axios.post('http://localhost:8082/session', sessionPayload)
     .then((response) => {
       console.log(response.data);
       localStorage.setItem('sessionId', response.data);

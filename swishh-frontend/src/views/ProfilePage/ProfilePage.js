@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useCallback } from "react";
 // nodejs library that concatenates classes
 import classNames from "classnames";
 // @material-ui/core components
@@ -10,16 +10,20 @@ import GridContainer from "components/Grid/GridContainer.js";
 import GridItem from "components/Grid/GridItem.js";
 import HeaderLinks from "components/Header/HeaderLinks.js";
 import Parallax from "components/Parallax/Parallax.js";
-
+import GridList from '@material-ui/core/GridList';
+import GridListTile from '@material-ui/core/GridListTile';
+import GridListTileBar from '@material-ui/core/GridListTileBar';
+import IconButton from '@material-ui/core/IconButton';
+import ShareIcon from '@material-ui/icons/Share';
+import GetAppIcon from '@material-ui/icons/GetApp';
+import { render } from "react-dom";
+import Gallery from "react-photo-gallery";
+import Carousel, { Modal, ModalGateway } from "react-images";
 import profile from "assets/img/faces/christian.jpg";
-
-import studio1 from "assets/img/examples/studio-1.jpg";
-import studio2 from "assets/img/examples/studio-2.jpg";
-import studio4 from "assets/img/examples/studio-4.jpg";
-import studio5 from "assets/img/examples/studio-5.jpg";
-
 import styles from "assets/jss/material-kit-react/views/profilePage.js";
 import axios from "axios";
+import { photos } from "./photos";
+import Foldericon from "assets/img/Folder-icon.png";
 
 const useStyles = makeStyles(styles);
 
@@ -31,11 +35,34 @@ export default function ProfilePage(props) {
     classes.imgRoundedCircle,
     classes.imgFluid
   );
+  const [currentImage, setCurrentImage] = useState(0);
+  const [viewerIsOpen, setViewerIsOpen] = useState(false);
+  const openLightbox = useCallback((event, { photo, index }) => {
+    setCurrentImage(index);
+    setViewerIsOpen(true);
+  }, []);
+
+  const closeLightbox = () => {
+    setCurrentImage(0);
+    setViewerIsOpen(false);
+  };
   const navImageClasses = classNames(classes.imgRounded, classes.imgGallery);
   const [images, setImages] = React.useState([]);
   const [username, setUserName] = React.useState('');
   const [isLoggedInUser, setIsLoggedInUser] = React.useState(false);
-
+  const download = (source) => {
+    var element = document.createElement("a");
+    var file = new Blob(
+      [
+        source
+      ],
+      { type: "image/*" }
+    );
+    element.href = URL.createObjectURL(file);
+    element.download = "image.jpg";
+    element.click();
+    console.log("test")
+  };
   React.useEffect(() => {
     // const username = localStorage.getItem('username');
     // const sessionId = localStorage.getItem('sessionId');
@@ -50,17 +77,18 @@ export default function ProfilePage(props) {
     // });
 
     //if (isLoggedInUser) {
-    if(localStorage.getItem('sessionId') != null){
+    if (localStorage.getItem('sessionId') != null) {
 
       setUserName(localStorage.getItem('username'));
       axios.get('http://localhost:8081/files?username=' + localStorage.getItem('username'))
         .then(function (response) {
+          console.log(response.data)
           setImages(response.data);
         });
     }
     else {
       window.alert("You are not logged in. Please sign out and sign in to continue.");
-      setTimeout(()=> props.history.push('/'), 2000);
+      setTimeout(() => props.history.push('/'), 2000);
     }
   }, [])
 
@@ -94,59 +122,110 @@ export default function ProfilePage(props) {
               </GridItem>
             </GridContainer>
             <div className={classes.description}>
-              <p>
-                An artist of considerable range, Chet Faker — the name taken by
-                Melbourne-raised, Brooklyn-based Nick Murphy — writes, performs
-                and records all of his own music, giving it a warm, intimate
-                feel with a solid groove structure.{" "}
-              </p>
+              
             </div>
+            
+            {images.length === 0 ?
 
+              <GridContainer >
+                 <GridItem xs={12} sm={4} md={8} style= {{marginLeft : '28rem'}}>
+                  There are no images to show
+                  </GridItem>
+              </GridContainer>
+           :
             <GridContainer >
-              <GridItem xs={12} sm={12} md={4}>
-                {images.map((image) => (
-                  <img
-                    alt="..."
-                    src={'data:image/jpeg;base64,' + image}
-                    className={navImageClasses}
-                  />
-                ))}
-                <img
-                  alt="..."
-                  src={studio1}
-                  className={navImageClasses}
-                />
-                <img
-                  alt="..."
-                  src={studio2}
-                  className={navImageClasses}
-                />
-              </GridItem>
-              <GridItem xs={12} sm={12} md={4}>
-                <img
-                  alt="..."
-                  src={studio5}
-                  className={navImageClasses}
-                />
-                <img
-                  alt="..."
-                  src={studio4}
-                  className={navImageClasses}
-                />
-              </GridItem>
-              <GridItem xs={12} sm={12} md={4}>
-                <img
-                  alt="..."
-                  src={studio2}
-                  className={navImageClasses}
-                />
-                <img
-                  alt="..."
-                  src={studio1}
-                  className={navImageClasses}
-                />
-              </GridItem>
+              <GridList cellHeight={250} cols={3}>
+                {/* {images.map((image) => (
+                  <GridListTile key={image}>
+                    <img src={'data:image/jpeg;base64,' + image} alt="..." />
+                    <GridListTileBar
+                      title="Test"
+                      // subtitle={<span>by: {tile.author}</span>}
+                      actionIcon={
+                        <IconButton aria-label={`info about test`} style={{color: 'rgba(255, 255, 255, 0.54)', }}>
+                          <GetAppIcon style={{marginRight:'1rem'}}
+                          onClick={() => {download('data:image/jpeg;base64,' + image)}}/>
+                          <ShareIcon/>
+                        </IconButton>
+                      }
+                    />
+                  </GridListTile>
+                ))} */}
+
+                <GridListTile style={{ marginBottom: '6rem'}}>
+                    <img src={Foldericon} alt="..." style={{ height : '285px', marginRight:'rem'}}/>
+                    <GridListTileBar
+                      title="Test"
+                      // subtitle={<span>by: {tile.author}</span>}
+                      actionIcon={
+                        <IconButton aria-label={`info about test`} style={{color: 'rgba(255, 255, 255, 0.54)', }}>
+                          <GetAppIcon style={{marginRight:'1rem'}}
+                          />
+                          <ShareIcon/>
+                        </IconButton>
+                      }
+                    />
+                  </GridListTile>
+                  <GridListTile style={{ marginBottom: '6rem'}}>
+                    <img src={Foldericon} alt="..." style={{ height : '285px', marginRight:'2rem'}}/>
+                    <GridListTileBar
+                      title="Test"
+                      // subtitle={<span>by: {tile.author}</span>}
+                      actionIcon={
+                        <IconButton aria-label={`info about test`} style={{color: 'rgba(255, 255, 255, 0.54)', }}>
+                          <GetAppIcon style={{marginRight:'1rem'}}
+                          />
+                          <ShareIcon/>
+                        </IconButton>
+                      }
+                    />
+                  </GridListTile>
+                  <GridListTile style={{ marginBottom: '6rem'}}>
+                    <img src={Foldericon} alt="..." style={{ height : '285px', marginRight:'2rem'}}/>
+                    <GridListTileBar
+                      title="Test"
+                      // subtitle={<span>by: {tile.author}</span>}
+                      actionIcon={
+                        <IconButton aria-label={`info about test`} style={{color: 'rgba(255, 255, 255, 0.54)', }}>
+                          <GetAppIcon style={{marginRight:'1rem'}}
+                          />
+                          <ShareIcon/>
+                        </IconButton>
+                      }
+                    />
+                  </GridListTile>
+                  <GridListTile style={{ marginBottom: '6rem'}}>
+                    <img src={Foldericon} alt="..." style={{ height : '285px', marginRight:'2rem'}}/>
+                    <GridListTileBar
+                      title="Test"
+                      // subtitle={<span>by: {tile.author}</span>}
+                      actionIcon={
+                        <IconButton aria-label={`info about test`} style={{color: 'rgba(255, 255, 255, 0.54)', }}>
+                          <GetAppIcon style={{marginRight:'1rem'}}
+                          />
+                          <ShareIcon/>
+                        </IconButton>
+                      }
+                    />
+                  </GridListTile>
+                  <GridListTile style={{marginBottom: '6rem'}}>
+                    <img src={Foldericon} alt="..." style={{ height : '285px', marginRight:'2rem'}}/>
+                    <GridListTileBar
+                      title="Test"
+                      // subtitle={<span>by: {tile.author}</span>}
+                      actionIcon={
+                        <IconButton aria-label={`info about test`} style={{color: 'rgba(255, 255, 255, 0.54)', }}>
+                          <GetAppIcon style={{marginRight:'1rem'}}
+                          />
+                          <ShareIcon/>
+                        </IconButton>
+                      }
+                    />
+                  </GridListTile>
+                  
+              </GridList>
             </GridContainer>
+            }
           </div>
 
         </div>
