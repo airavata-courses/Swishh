@@ -6,8 +6,12 @@ jobs:
       - image: circleci/openjdk:8-jdk
     working_directory: ~/repo
     steps:
+      - setup_remote_docker:
+          version: 18.09.3
       - checkout
-      - run: cd ImageStorage && ls -la && mvn dependency:go-offline&&mvn clean package&&mvn clean compile jib:build -Dimage=swishh/imagestorage:$CIRCLE_BUILD_NUM
+      - run: pwd
+      - run: docker login --username $DOCKER_USER --password $DCOKER_PASS
+      - run: cd ImageStorage && ls -la && mvn clean install package && docker image build . -t harihareeshb/image-storage:latest && docker push harihareeshb/image-storage:latest
 
       # store raw contents of src code
       - store_artifacts:
