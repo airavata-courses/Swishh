@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "core-outrider-162404",
+  "private_key_id": "c1ef48b6fe4ccf9570c907b3ce786c206a862dbc",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC9ZMrPJioZt4CZ\nhkxzlGykvWhLWd1wme50nepuZMHYrbgrEdo7Cca4lGnuwn4vlPvI7ntmMATZUype\nznC7FuQyGMXwB0y9Otmrly+vGbT+TqzUSf5cUAHC3xr/G5RsuIEbUNtsec/eaVn7\nLwarj/T3cGqA8owbxlqaOKPBzv0HyHDY8AULVHbovEJj8gLWqPqwO2SPSdYaE8KZ\nWH2WbIRK8CVw4eyC5DWjbm4do+X7P5xDlU/cZp5vapKm01gon053KcE9sOkYSjlF\n1SksIWTxEXlMJm15chC9pOIySlI4KlkZ7BNU0sjoyVuHgKSKWtYLjuhjfxoibrrc\nqQC9kponAgMBAAECggEASUdPRRkCHxMl+cDBodKiupbiXI03pZKZdZuIEhCABCMq\n59cvdbpRnicmWY/9HNHrHZJQQnh/18pa0XXUnj68Kjn1k+pvIaQ8hiyn8Xrj0aWF\nL1o1xWfbVpfWLTBxnCNDKNt/GpiC+g4PF6XZUdYQNRDU1HGEDlcPxS33BkzdD/4s\n8XzZltUt9/vM/DY1VxXlKZ1d9oGfv5Ty/ZesCBHyfOCzwcmuhvIzGse2VDnM+d/q\ntXolPR0pP+252KRTdpxW8024Oiik/7Fy8/wUE/PjGWqZnNV7q7nua0ifiphDk9G4\nWdLM2l7ZkwKrFby5KRUtlGb3yeNiodHfPGNHoCoXMQKBgQD7TVVaO/W/xY9tUUrG\n0wdCB1R6O1VceL6b8GcA9aCDYX3VNF3epv09tEhmNL/5QoRgHktgxmxbpSI7AIiH\nPsYqkL/PpfiICQsHNH1wGhqrYwlqHxW6A/Dqiben2f0mb5b5pQ4e8gAUK9vJLjub\niQ6a3GFT/hM69TWU3ptRm8pnyQKBgQDA7y5zAORyX4ADHqzprgGwlordphvi/PxS\nddTecwCeDicvFjpfH8TnlteYZEzrV31KhzrdHNa1tcnNskjLvCV4GlcMj1JhHeGc\nXMSvxZdRGauCsCsyjaXLrnMCcS32jB5rycLmrJYSLSQHEpc3XfleNgHkoRNtUup9\nwLnmDxPKbwKBgCuzriUsCjeYXrHvEibzae60oZ9EFDspkFREAVWsYYaXfK+IFM70\nkVOat4B2qe/p/mVMv2UL/KoPVJ2YISYL56BdXc35mffmQrG1Eh9dmse1SFzZHQkl\nSE8xNewNv7VgcIvnhUYiZZscaXNaA+mvcwfBTXey1ptJK1FBSRdvFUrpAoGBAJJk\nKatrTuuVmO1FFlCNDo0t/RonUtuNt+rdq3JKcnp7JLIuvIW29lH++4GPAWpEzTWC\nnGBv5F6mHARutZuZHBkga1KFYS19XdWl8juowqLvxlp4T56hKd79dBizRfvf36lL\nww4CgDA0fjS7n2+MZ41bj14p9jKqinB2jteIMy0TAoGAGa+vzQl5v1gChmRJUZWD\nJsT/J6SBYxz1tOOodv3cuxPbU/AlMkwQcPtikXEtPsDpFti28J7/BoK1B3YIITtr\nk6nhMD/hC1s+zXzdoONekp5V+JFPNKif4uCEpssZtU629Pp9XV10/fSCqGb6Is6W\nbydiKXtN0dfQdx4AvPxP1hU=\n-----END PRIVATE KEY-----\n",
+  "client_email": "swishh@core-outrider-162404.iam.gserviceaccount.com",
+  "client_id": "102672229572996627018",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/swishh%40core-outrider-162404.iam.gserviceaccount.com"
+}
