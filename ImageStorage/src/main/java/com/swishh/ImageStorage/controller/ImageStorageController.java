@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.swishh.ImageStorage.exception.StorageException;
 import com.swishh.ImageStorage.exception.StorageFileNotFoundException;
+import com.swishh.ImageStorage.models.request.FilesResponse;
 import com.swishh.ImageStorage.service.impl.FileSystemStorageService;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -27,7 +28,7 @@ public class ImageStorageController {
 	FileSystemStorageService storageService;
 	
 	@GetMapping("/files")
-	public ArrayList<byte[]> listUploadedFiles(Model model,String username) throws IOException {
+	public ArrayList<FilesResponse> listUploadedFiles(Model model,String username) throws IOException {
 		return 	storageService.loadAll(username);
 	}
 

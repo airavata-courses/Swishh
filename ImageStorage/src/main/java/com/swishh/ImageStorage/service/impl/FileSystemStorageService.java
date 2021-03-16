@@ -26,9 +26,11 @@ import com.swishh.ImageStorage.exception.StorageException;
 import com.swishh.ImageStorage.exception.StorageFileNotFoundException;
 import com.swishh.ImageStorage.models.FilesDao;
 import com.swishh.ImageStorage.models.UserDAO;
+import com.swishh.ImageStorage.models.request.FilesResponse;
 import com.swishh.ImageStorage.service.IFileService;
 import com.swishh.ImageStorage.service.IUserService;
 import com.swishh.ImageStorage.service.StorageService;
+import com.swishh.ImageStorage.util.GDriveFileUploadUtil;
 
 @Service
 public class FileSystemStorageService implements StorageService {
@@ -43,6 +45,9 @@ public class FileSystemStorageService implements StorageService {
 	
 	@Autowired
 	private IFileService fileService;
+	
+	@Autowired
+	private GDriveFileUploadUtil gcloudUploadUtil;
 	
 	@PostConstruct
 	private void initPrams() {
@@ -62,6 +67,7 @@ public class FileSystemStorageService implements StorageService {
 				
 			}
 			Path uploaddirPath=Paths.get(filepath);
+			System.out.println(uploaddirPath.toString());
 			for (MultipartFile file : files) {
 				if (file.isEmpty()) {
 					throw new StorageException("Failed to store empty file.");
@@ -82,7 +88,8 @@ public class FileSystemStorageService implements StorageService {
 					uploaddir.mkdirs();
 					creatFile.createNewFile();
 				}
-
+				System.out.println(destinationFile);
+				gcloudUploadUtil.fileUpload(file, filename);
 				try (InputStream inputStream = file.getInputStream()) {
 					Files.copy(inputStream, destinationFile, StandardCopyOption.REPLACE_EXISTING);
 				}
@@ -94,24 +101,31 @@ public class FileSystemStorageService implements StorageService {
 	}
 
 	@Override
-	public ArrayList<byte[]> loadAll(String username) throws IOException {
+	public ArrayList<FilesResponse> loadAll(String username) throws IOException {
+		System.out.println(username);
 		String userId=getUserIdFromUserName(username);
+		System.out.println(userId+" found");
 		Path filePath=Paths.get(fileUploadDir+File.separator+userId);
 		ArrayList<byte[]> filesList = new ArrayList<byte[]>();
+		ArrayList<FilesResponse> fileResponseList=new ArrayList<FilesResponse>();
 		File dir = new File(filePath.toString());
 		try {
 			if (dir.exists() && dir.isDirectory()) {
 				for (File file : dir.listFiles()) {
+					System.out.println(file.toString()+" "+file.getAbsolutePath());
 					byte[] filear = Files.readAllBytes(file.toPath());
 					filesList.add(filear);
-
+					FilesResponse filesResponse=new FilesResponse();
+					filesResponse.setFilename(file.getName());
+					filesResponse.setFile(Files.readAllBytes(file.toPath()));
+					fileResponseList.add(filesResponse);
 				}
 			}
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
 
-		return filesList;
+		return fileResponseList;
 
 	}
 

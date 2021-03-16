@@ -6,11 +6,12 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.security.GeneralSecurityException;
 
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.google.api.client.http.FileContent;
 import com.swishh.ImageStorage.cloud.GDriveConnection;
-
+@Component
 public class GDriveFileUploadUtil {
 	
 	public void fileUpload(MultipartFile file,String fileId) throws IllegalStateException, IOException {
