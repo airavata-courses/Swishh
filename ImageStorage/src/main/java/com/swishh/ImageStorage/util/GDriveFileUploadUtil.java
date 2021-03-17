@@ -17,7 +17,7 @@ public class GDriveFileUploadUtil {
 	public void fileUpload(MultipartFile file,String fileId) throws IllegalStateException, IOException {
 		com.google.api.services.drive.model.File uploadFile=new com.google.api.services.drive.model.File();
 		uploadFile.setName(fileId);
-		uploadFile.setMimeType("image/jpeg");
+		uploadFile.setMimeType(file.getContentType());
 		File tmpFile=new File(fileId);
 		if(!tmpFile.exists()) {
 			tmpFile.createNewFile();

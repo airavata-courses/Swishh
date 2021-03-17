@@ -4,16 +4,24 @@ import java.util.List;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
 public class FilesDao {
 	
+	
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	int id;
 	String userId;
 	
 	@ElementCollection
-	List<String> fileids;
+	List<String> sharedwith;
+	
+	
+	String fileid;
 	
 	public String getUserId() {
 		return userId;
@@ -23,12 +31,20 @@ public class FilesDao {
 		this.userId = userId;
 	}
 
-	public List<String> getFileids() {
-		return fileids;
+	public String getFileids() {
+		return fileid;
 	}
 
-	public void setFileids(List<String> fileids) {
-		this.fileids = fileids;
+	public void setFileids(String fileid) {
+		this.fileid = fileid;
+	}
+
+	public List<String> getSharedwith() {
+		return sharedwith;
+	}
+
+	public void setSharedwith(List<String> sharedwith) {
+		this.sharedwith = sharedwith;
 	}
 
 	

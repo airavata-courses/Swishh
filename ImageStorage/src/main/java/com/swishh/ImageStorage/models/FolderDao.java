@@ -6,12 +6,15 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-@Entity
+//@Entity
 public class FolderDao {
 	
 	String folderId;
 	@Id
 	String folderName;
+	
+	@ElementCollection
+	List<FolderDao> foldersList;
 	String ownerName;
 	@ElementCollection
 	List<String> sharedwith;
