@@ -13,7 +13,7 @@ jobs:
       - run: docker login --username $DOCKER_USER --password $DCOKER_PASS
       - run: cd ImageStorage && mvn clean install package && docker image build . -t swishhspring2021/image-storage:latest && docker push swishhspring2021/image-storage:latest
       - run: cd SessionManagement && mvn clean install package && docker image build . -t swishhspring2021/session-service:latest && docker push swishhspring2021/session-service:latest
-      - run: cd swishh-frontend && docker image build . -t swishhspring2021/swsihh-ui:latest && docker push swishhspring2021/swishh-ui:latest
+      - run: cd swishh-frontend && docker image build . -t swishhspring2021/swishh-ui:latest && docker push swishhspring2021/swishh-ui:latest
       
       - run: cd user-service && docker image build . -t swishhspring2021/user-service:latest && docker push swishhspring2021/user-service:latest
       
