@@ -1,5 +1,7 @@
 package com.swishh.ImageStorage.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,8 +16,8 @@ public class Fileservice implements IFileService{
 	
 	
 	@Override
-	public FilesDao getUserFiles(String userId) {
-		return filesRepository.findById(userId).orElse(null);
+	public FilesDao getUserFiles(String userId,String fileid) {
+		return filesRepository.findByUserAndFile(userId,fileid);
 	}
 
 	@Override

@@ -26,9 +26,12 @@ import com.swishh.ImageStorage.exception.StorageException;
 import com.swishh.ImageStorage.exception.StorageFileNotFoundException;
 import com.swishh.ImageStorage.models.FilesDao;
 import com.swishh.ImageStorage.models.UserDAO;
+import com.swishh.ImageStorage.models.request.FilesResponse;
 import com.swishh.ImageStorage.service.IFileService;
 import com.swishh.ImageStorage.service.IUserService;
 import com.swishh.ImageStorage.service.StorageService;
+import com.swishh.ImageStorage.util.GDriveFileUploadUtil;
+import com.swishh.ImageStorage.util.UserIdUtil;
 
 @Service
 public class FileSystemStorageService implements StorageService {
@@ -44,6 +47,12 @@ public class FileSystemStorageService implements StorageService {
 	@Autowired
 	private IFileService fileService;
 	
+	@Autowired
+	private GDriveFileUploadUtil gcloudUploadUtil;
+	
+	@Autowired
+	UserIdUtil userIdUtil;
+	
 	@PostConstruct
 	private void initPrams() {
 		rootLocation = Paths.get(File.pathSeparator+fileUploadDir);
@@ -54,25 +63,28 @@ public class FileSystemStorageService implements StorageService {
 	public void store(MultipartFile[] files,String username,String folder) {
 		
 		try {
-			String userId=getUserIdFromUserName(username);
-			List<String> filesList=new ArrayList<String>();
+			String userId=userIdUtil.getUserIdfromUserName(username);
+			List<FilesDao> filesList=new ArrayList<FilesDao>();
 			String filepath=fileUploadDir+File.separator+userId;
 			if(folder!=null&&folder.trim()!="") {
 				filepath=filepath+File.separator+folder;
 				
 			}
 			Path uploaddirPath=Paths.get(filepath);
+			System.out.println(uploaddirPath.toString());
 			for (MultipartFile file : files) {
 				if (file.isEmpty()) {
 					throw new StorageException("Failed to store empty file.");
 				}
 				String fileExtension=file.getContentType().substring(file.getContentType().lastIndexOf('/')+1);
-				String filename=UUID.randomUUID().toString()+"."+fileExtension;
-				if(folder!=null&&!folder.trim().equalsIgnoreCase("")) {
-					filesList.add(folder+File.separator+filename);
-				}else {
-					filesList.add(filename);
-				}
+				String filename=UUID.randomUUID().toString();
+				FilesDao filedao=new FilesDao();
+				filedao.setUserId(userId);
+				filedao.setFileids(filename);
+				filename+="."+fileExtension;
+				
+				
+				
 				Path destinationFile = uploaddirPath.resolve(Paths.get(filename)).normalize()
 						.toAbsolutePath();
 				File creatFile = new File(destinationFile.toString());
@@ -82,7 +94,8 @@ public class FileSystemStorageService implements StorageService {
 					uploaddir.mkdirs();
 					creatFile.createNewFile();
 				}
-
+				System.out.println(destinationFile);
+				gcloudUploadUtil.fileUpload(file, filename);
 				try (InputStream inputStream = file.getInputStream()) {
 					Files.copy(inputStream, destinationFile, StandardCopyOption.REPLACE_EXISTING);
 				}
@@ -94,24 +107,31 @@ public class FileSystemStorageService implements StorageService {
 	}
 
 	@Override
-	public ArrayList<byte[]> loadAll(String username) throws IOException {
-		String userId=getUserIdFromUserName(username);
+	public ArrayList<FilesResponse> loadAll(String username) throws IOException {
+		System.out.println(username);
+		String userId=userIdUtil.getUserIdfromUserName(username);
+		System.out.println(userId+" found");
 		Path filePath=Paths.get(fileUploadDir+File.separator+userId);
 		ArrayList<byte[]> filesList = new ArrayList<byte[]>();
+		ArrayList<FilesResponse> fileResponseList=new ArrayList<FilesResponse>();
 		File dir = new File(filePath.toString());
 		try {
 			if (dir.exists() && dir.isDirectory()) {
 				for (File file : dir.listFiles()) {
+					System.out.println(file.toString()+" "+file.getAbsolutePath());
 					byte[] filear = Files.readAllBytes(file.toPath());
 					filesList.add(filear);
-
+					FilesResponse filesResponse=new FilesResponse();
+					filesResponse.setFilename(file.getName());
+					filesResponse.setFile(Files.readAllBytes(file.toPath()));
+					fileResponseList.add(filesResponse);
 				}
 			}
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
 
-		return filesList;
+		return fileResponseList;
 
 	}
 
@@ -150,33 +170,11 @@ public class FileSystemStorageService implements StorageService {
 		}
 	}
 	
-	private String getUserIdFromUserName(String username) {
-		String userId=null;
-		UserDAO user=userService.getUserRecord(username);
-		if(user==null||user.getUserid()==null) {
-			userId=UUID.randomUUID().toString();
-			user=new UserDAO();
-			user.setUserid(userId);
-			user.setUsername(username);
-			userService.saveUserRecord(user);
-		}else {
-			userId=user.getUserid();
-		}
-		return userId;
-	}
 	
-	private void saveFileIdsToDB(String userid,List<String> fileids) {
-		FilesDao userFile=fileService.getUserFiles(userid);
-		if(userFile==null) {
-			userFile=new FilesDao();
-			userFile.setUserId(userid);
-			userFile.setFileids(fileids);
-		}else {
-			List<String> ids=userFile.getFileids();
-			ids.addAll(fileids);
-			userFile.setFileids(ids);
-		}
-		fileService.updateUserFiles(userFile);
+	
+	private void saveFileIdsToDB(String userid,List<FilesDao> fileids) {
+		for(FilesDao file:fileids)
+		fileService.updateUserFiles(file);
 		
 	}
 }
