@@ -1,4 +1,0 @@
-flask
-flask-restful
-Flask-JWT
-flask_cors
