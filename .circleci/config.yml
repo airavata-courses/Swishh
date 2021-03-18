@@ -15,9 +15,9 @@ jobs:
       - run: cd SessionManagement && mvn clean install package && docker image build . -t swishhspring2021/session-service:latest && docker push swishhspring2021/session-service:latest
       - run: cd swishh-frontend && docker image build . -t swishhspring2021/swishh-ui:latest && docker push swishhspring2021/swishh-ui:latest
       
-      - run: cd user-service && docker image build . -t swishhspring2021/user-service:latest && docker push swishhspring2021/user-service:latest
+      #- run: cd user-service && docker image build . -t swishhspring2021/user-service:latest && docker push swishhspring2021/user-service:latest
       
-      - run: cd "Image Image Metadata" &&docker image build . -t swishhspring2021/metedata-service:latest && docker push swishhspring2021/metadata-service:latest
+      - run: cd "Image Metadata" &&docker image build . -t swishhspring2021/metedata-service:latest && docker push swishhspring2021/metadata-service:latest
 
       # store raw contents of src code
       - store_artifacts:
