@@ -1,7 +1,18 @@
-node('docker') {
-    stage('Checkout') {
-        scm checkout
+pipeline {
+    agent any
+    triggers {
+        pollSCM '* * * * *'
     }
-    stage 'Build'
-    sh "./mvn -Pversion="intial" build"
+    stages {
+        stage('Build') {
+            steps {
+                sh './mvn clean install'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh './mvn install'
+            }
+        }
+    }
 }
