@@ -1,0 +1,7 @@
+node('docker') {
+    stage('Checkout') {
+        scm checkout
+    }
+    stage 'Build'
+    sh "./mvn -Pversion="intial" build"
+}
