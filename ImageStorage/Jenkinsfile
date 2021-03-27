@@ -9,6 +9,7 @@ pipeline {
           {
             steps
              {
+             sh "env"
               git branch: 'feature/jenkins', url: 'https://github.com/airavata-courses/Swishh.git'
               script {
                   def pom = readMavenPom file: 'pom.xml'
