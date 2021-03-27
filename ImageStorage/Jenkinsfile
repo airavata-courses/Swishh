@@ -11,9 +11,11 @@ pipeline {
              {
              sh "env"
               git branch: 'feature/jenkins', url: 'https://github.com/airavata-courses/Swishh.git'
-              script {
-		    cd $WORKSPACE/ImageStorage/
-                  def pom = readMavenPom file: 'pom.xml'
+		     sh """ 
+		     cd $WORKSPACE/ImageStorage/
+		     """
+		     script {
+                  def pom = readMavenPom file: '$WORKSPACE/ImageStorage/pom.xml'
                   version = pom.version
               }
               sh "mvn install -DskipTests=true"
