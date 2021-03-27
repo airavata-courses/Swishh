@@ -3,7 +3,20 @@ pipeline {
     triggers {
         pollSCM '* * * * *'
     }
+	
     stages {
+		stage('Build App')
+          {
+            steps
+             {
+              git branch: 'feature/jenkins', url: 'https://github.com/airavata-courses/Swishh.git'
+              script {
+                  def pom = readMavenPom file: 'pom.xml'
+                  version = pom.version
+              }
+              sh "mvn install -DskipTests=true"
+            }
+          }
         stage('Build') {
             steps {
                 sh 'mvn clean install'
