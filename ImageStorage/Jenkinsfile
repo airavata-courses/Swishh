@@ -24,12 +24,12 @@ pipeline {
           }
         stage('Build') {
             steps {
-                sh 'mvn clean install'
+                sh 'mvn -f ImageStorage/pom.xml clean install'
             }
         }
         stage('Test') {
             steps {
-                sh 'mvn install'
+                sh 'mvn -f ImageStorage/pom.xml install'
             }
         }
     }
