@@ -19,7 +19,7 @@ pipeline {
                   def pom = readMavenPom file: 'ImageStorage/pom.xml'
                   version = pom.version
               }
-              sh "mvn install -DskipTests=true"
+              sh "mvn -f ImageStorage/pom.xml install -DskipTests=true"
             }
           }
         stage('Build') {
