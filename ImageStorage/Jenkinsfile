@@ -38,7 +38,7 @@ pipeline {
 				sh 'docker build -t swishhspring2021/imagestorage:latest'
 			}
 		}
-		stage('Dockerising'){
+		stage('Dockerhub'){
 			steps{
 				sh 'docker push swishhspring2021/imagestorage:latest'
 			}
