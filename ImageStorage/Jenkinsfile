@@ -36,7 +36,7 @@ pipeline {
 			steps{
 				sh 'docker login -u swishhspring2021 -p Spring@2021'
 				sh 'docker build -f ImageStorage/Dockerfile' 
-				sh 'docker build-t swishhspring2021/imagestorage:latest '
+				sh 'docker build -t swishhspring2021/imagestorage:latest '
 				
 			}
 		}
