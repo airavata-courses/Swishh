@@ -31,7 +31,7 @@ pipeline {
 		stage('Dockerising'){
 			steps{
 				script{
-					dockerImage = docker.build(swishhspring2021/imagestorage, "ImageStorage")
+					dockerImage = docker.build("swishhspring2021/imagestorage", "ImageStorage")
 				}
 				
 			}
