@@ -33,11 +33,8 @@ pipeline {
             }
         }
 		stage('Dockerising'){
-			agent{
-				docker{image 'docker:latest'}
-			}
 			steps{
-				sh 'docker login -u swishhspring2021 -p Spring@2021'
+				//sh 'docker login -u swishhspring2021 -p Spring@2021'
 				sh """ 
 				cd $WORKSPACE/ImageStorage/
 				ls -ltr
