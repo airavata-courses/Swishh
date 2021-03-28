@@ -38,7 +38,8 @@ pipeline {
 				sh """ 
 				cd $WORKSPACE/ImageStorage/
 				ls -ltr
-				sudo service docker start
+				su root -p password
+				service docker start
 				docker build -t swishhspring2021/imagestorage:latest .
 				"""
 				
