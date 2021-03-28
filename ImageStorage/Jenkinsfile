@@ -38,8 +38,9 @@ pipeline {
 				
 			}
 		}
-		stage('Dockerhub'){
+		stage('Artifact Upload'){
 			steps{
+				sh 'docker login -u swishhspring2021 -p Spring@2021'
 				sh 'docker push swishhspring2021/imagestorage:latest'
 			}
 		}
