@@ -9,7 +9,6 @@ import ListItem from "@material-ui/core/ListItem";
 import Tooltip from "@material-ui/core/Tooltip";
 // @material-ui/icons
 import PublishIcon from '@material-ui/icons/Publish';
-import Close from "@material-ui/icons/Close";
 
 // core components
 import CustomDropdown from "components/CustomDropdown/CustomDropdown.js";
@@ -28,30 +27,56 @@ export default function HeaderLinks(props) {
   const classes = useStyles();
 
     const hiddenFileInput = React.useRef(null);
+    const [isLoggedInUser, setIsLoggedInUser] = React.useState('');
     const handleClick = () => {
+
       console.log("signed out");
       console.log("Invalidated token successfully!");
       localStorage.clear();
       window.location.href = '/';
-    };
-    const handleChange = event => {
-      const fileUploaded = event.target.files[0];
-      const username = localStorage.getItem(username);
-      console.log(fileUploaded);
-
-      let formData = new FormData();
-      formData.append("file", fileUploaded);
-      formData.append('username',username);
-
-      axios.post('http://localhost:8080/upload/', formData ,{
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        }
-      }).then(function (response) {
-        console.log(response);
+      axios.post('http://localhost:8082/invalidate', sessionPayload)
+      .then(function (response) {
+        console.log(response.data)
       });
     };
 
+    const handleChange = event => {
+      const fileUploaded = event.target.files[0];
+      const username = localStorage.getItem('username');
+      // const sessionId = localStorage.getItem('sessionId');
+
+      // const sessionPayload = {
+      //   "username": username,
+      //   "sessionId" : sessionId
+      // }
+
+      // axios.post('http://localhost:8080/validate', sessionPayload)
+      // .then(function (response) {
+      //   setIsLoggedInUser(response.data);
+      // });
+
+      if(localStorage.getItem('sessionId') != null){
+      //if(isLoggedInUser){
+        let formData = new FormData();
+        formData.append("file", fileUploaded);
+        formData.append('username',username);
+        formData.append("foldername", "");
+
+        axios.post('http://localhost:8080/upload/', formData ,{
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          }
+        }).then(function (response) {
+          console.log(response);
+          window.location.reload();
+        });
+      }
+      else{
+        window.alert("You are not logged in. Please sign out and sign in to continue.");
+        setTimeout(()=> props.history.push('/'), 2000);
+      }
+    };
+if(localStorage.getItem('sessionId'))
   return (
     <List className={classes.list}>
       <ListItem className={classes.listItem}>
@@ -95,7 +120,6 @@ export default function HeaderLinks(props) {
               type="file"
               ref={hiddenFileInput}
               onChange={handleChange}
-              // style={{display: 'none'}}
             />
           </Button>
         </Tooltip>
@@ -103,4 +127,7 @@ export default function HeaderLinks(props) {
       </ListItem>
     </List>
   );
+  else{
+    return <></>
+  }
 }
