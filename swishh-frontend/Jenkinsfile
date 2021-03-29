@@ -17,6 +17,7 @@ pipeline {
              {
 		     sh """ 
 		     cd $WORKSPACE/swishh-frontend/
+			 npm cache clean --force
 			 npm install
 		     ls -ltr
 		     """
