@@ -17,6 +17,8 @@ pipeline {
              {
 		     sh """ 
 		     cd $WORKSPACE/user-service/
+			 virtualenv venv --distribute
+			 . venv/bin/activate 
 			 pip install -r requirements.txt
 		     ls -ltr
 		     """
