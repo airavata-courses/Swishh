@@ -10,13 +10,14 @@ import Components from "views/Components/Components.js";
 import ProfilePage from "views/ProfilePage/ProfilePage.js";
 import LoginPage from "views/LoginPage/LoginPage.js";
 import RegisterPage from "views/RegisterPage/RegisterPage.js";
+import LandingPage from "views/LandingPage/LandingPage.js";
 
 var hist = createBrowserHistory();
 
 ReactDOM.render(
   <Router history={hist}>
     <Switch>
-      {/* <Route path="/landing-page" component={LandingPage} /> */}
+      <Route path="/landing-page" component={LandingPage} />
       <Route path="/profile-page" component={ProfilePage} />
       <Route path="/refer" component={Components} />
       <Route path="/register-page" component={RegisterPage} />

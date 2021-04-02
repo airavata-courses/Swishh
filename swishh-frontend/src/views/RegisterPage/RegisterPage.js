@@ -40,25 +40,39 @@ export default function RegisterPage(props) {
   const classes = useStyles();
   const { ...rest } = props;
   const handleClick = () => {
-    console.log(firstName);
-    console.log(email);
-    console.log(password);
+    // console.log(firstName);
+    // console.log(email);
+    // console.log(password);
+
     const payload={
-    "username":email,
+    "username" : email,
     "password" : password
     }
-
-    axios.post('http://localhost:5000/register', payload, {
+    const sessionPayload={
+      "username": email
+    }
+    axios.post('http://localhost:5003/register', payload, {
     })
     .then((response) => {
-        setTimeout(()=> props.history.push('/profile-page'), 2000);
+      //add notification
+      window.alert("Registered successfully");
+      setTimeout(()=> props.history.push('/profile-page'), 2000);
+    })
+    .catch((error) => {
+        console.log(error)
+    })
+
+    axios.post('http://localhost:8082/session', sessionPayload)
+    .then((response) => {
+      console.log(response.data);
+      localStorage.setItem('sessionId', response.data);
     })
     .catch((error) => {
         console.log(error)
     })
    }
   return (
-    <div>
+    <div data-testid = "register-page">
       <Header
         absolute
         color="transparent"
@@ -83,15 +97,7 @@ export default function RegisterPage(props) {
                   <CardHeader color="primary" className={classes.cardHeader}>
                     <h4>Register</h4>
                     <div className={classes.socialLine}>
-                      <Button
-                        justIcon
-                        href="#pablo"
-                        target="_blank"
-                        color="transparent"
-                        onClick={e => e.preventDefault()}
-                      >
-                        <i className={"fab fa-twitter"} />
-                      </Button>
+                      
                       <Button
                         justIcon
                         href="#pablo"
