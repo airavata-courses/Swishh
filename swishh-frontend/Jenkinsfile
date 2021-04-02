@@ -29,8 +29,6 @@ pipeline {
              {
 		     sh """ 
 		     cd $WORKSPACE/swishh-frontend/
-			 npm cache clean --force
-			 npm install
 			 npm install --save-dev @testing-library/react
 			 npm test
 		     ls -ltr
