@@ -55,7 +55,7 @@ pipeline {
 		stage('deploy'){
 			steps{
 				sh """
-				ssh -T centos@10.1.1.12
+				ssh centos@10.1.1.12
 				oc new-app swishhspring2021/swishhfrontend
 				oc expose service/swishhfrontend
 				"""
