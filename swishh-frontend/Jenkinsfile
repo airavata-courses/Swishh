@@ -49,5 +49,14 @@ pipeline {
 				sh 'docker push swishhspring2021/swishhfrontend:latest'
 			}
 		}
+		stage('deploy'){
+			steps{
+				sh """
+				ssh ubuntu@149.165.170.179
+				oc new-app swishhspring2021/swishhfrontend
+				oc expose service/swishhfrontend
+				"""
+			}
+		}
     }
 }
