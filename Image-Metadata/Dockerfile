@@ -7,4 +7,4 @@ EXPOSE 5006
 
 ENTRYPOINT [ "python" ]
 
-CMD [ "Image_meta_data_service\server.py" ]
+CMD [ "server.py" ]
