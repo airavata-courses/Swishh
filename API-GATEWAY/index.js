@@ -13,7 +13,7 @@ const {app : {port}} = config;
 
 app.use(bodyParser.json());
 app.use(formidableMiddleware());
-app.use(bodyParser.urlencoded({extended:True}));
+app.use(bodyParser.urlencoded({extended:"True"}));
 
 app.get('/', (req,res) => {
     res.send('API Gateway');
