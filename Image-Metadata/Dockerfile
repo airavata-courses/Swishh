@@ -3,7 +3,7 @@ COPY . /docker-image-service
 WORKDIR /docker-image-service
 
 RUN pip install -r requirements.txt
-
+RUN pip install opencv
 EXPOSE 5006
 
 ENTRYPOINT [ "python" ]
