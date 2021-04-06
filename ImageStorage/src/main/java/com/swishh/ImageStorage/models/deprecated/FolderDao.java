@@ -1,4 +1,4 @@
-package com.swishh.ImageStorage.models;
+package com.swishh.ImageStorage.models.deprecated;
 
 import java.util.List;
 

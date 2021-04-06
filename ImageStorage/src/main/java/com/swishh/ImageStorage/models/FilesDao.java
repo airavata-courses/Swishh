@@ -47,6 +47,22 @@ public class FilesDao {
 		this.sharedwith = sharedwith;
 	}
 
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getFileid() {
+		return fileid;
+	}
+
+	public void setFileid(String fileid) {
+		this.fileid = fileid;
+	}
+
 	
 
 }
