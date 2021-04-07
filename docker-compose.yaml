@@ -1,0 +1,113 @@
+version: '3.7'
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    hostname: rabbitmq-service
+    container_name: rabbitmq
+    # volumes:
+    #   - /.docker/rabbitmq/etc/:/etc/rabbitmq/
+    #   - /.docker/rabbitmq/data/:/var/lib/rabbitmq/
+    #   - /.docker/rabbitmq/logs/:/var/log/rabbitmq/
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    restart: on-failure
+    healthcheck:
+      test: [ "CMD", "nc", "-z", "localhost", "5672" ]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    networks:
+      - swishh
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    
+  sessionmanagement:
+    image: swishhspring2021/sessionmanagement:latest
+    hostname: session-service
+    ports:
+      - "8082:8082"
+    tty: true
+    restart: on-failure
+    networks:
+      - swishh
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    
+  userservice:
+    image: swishhspring2021/userservice:latest
+    hostname: user-service
+    ports:
+      - "5003:5003"
+    tty: true
+    restart: on-failure
+    networks:
+      - swishh
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    
+  gatewayservice:
+    image: swishhspring2021/swishhapigateway:latest
+    hostname: gateway-service
+    ports:
+      - "5004:5004"
+    tty: true
+    restart: on-failure
+    networks:
+      - swishh
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+  metadataservice:
+    image: swishhspring2021/swishh-imagemetadata:latest
+    hostname: metadata-service
+    ports:
+      - "5999:5999"
+    tty: true
+    restart: on-failure
+    networks:
+      - swishh
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+  imageservice:
+    image: swishhspring2021/imagestorage:latest
+    hostname: imagestorage
+    ports:
+      - "8081:8081"
+    tty: true
+    restart: on-failure
+    networks:
+      - swishh
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+  ui:
+    image: swishhspring2021/swishhfrontend:latest
+    hostname: swishhui
+    ports:
+      - "3000:3000"
+    tty: true
+    restart: on-failure
+    networks:
+      - swishh
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+networks:
+  swishh:
