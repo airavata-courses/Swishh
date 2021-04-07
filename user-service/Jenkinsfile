@@ -79,7 +79,7 @@ pipeline {
                         continueOnError: false, failOnError: true,
                         publishers: [
                             sshPublisherDesc(
-                                configName: 'swishh_k8_master',
+                                configName: 'swishh_k8s_master',
                                 verbose: true,
                                 transfers: [
                                     sshTransfer(
