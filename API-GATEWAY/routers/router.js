@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var userRouter = require('./userService');
 var imageStorageRouter = require('./imageStorage');
-var sessionManagementRouter = require('/sessionManagement');
+var sessionManagementRouter = require('./sessionManagement');
 
 
 router.use((req, res, next) => {
