@@ -1,13 +1,48 @@
+def getEnvVar(String paramName){
+    return sh (script: "grep -w '${paramName}' SessionManagement/project.properties|cut -d'=' -f2", returnStdout: true).trim();
+}
+
+def getTimeStamp(){
+    return sh (script: "date +'%Y%m%d%H%M%S%N' | sed 's/[0-9][0-9][0-9][0-9][0-9][0-9]\$//g'", returnStdout: true).trim();
+}
+
 pipeline {
+
+	options {
+        disableConcurrentBuilds()
+    }
+    
     agent any
-    triggers {
+	triggers {
         pollSCM '* * * * *'
     }
-	
+
+    environment {
+        GIT_COMMIT_SHORT_HASH = sh (script: "git rev-parse --short HEAD", returnStdout: true)
+    }
+
     stages {
-		stage('checkout') {
+        stage('Init') {
             steps {
-                checkout scm
+                script {
+                    env.APP_NAME = getEnvVar('APP_NAME')
+                    env.CURRENT_BRANCH = env.BRANCH_NAME
+                    env.TIMESTAMP = getTimeStamp()
+                    env.IMAGE_NAME = getEnvVar('IMAGE_NAME')
+                    env.PORT = getEnvVar('PORT')
+                    env.TARGET_PORT = getEnvVar('TARGET_PORT')
+                    env.CONTAINER_PORT = getEnvVar('CONTAINER_PORT')
+                    env.REPLICA = getEnvVar('REPLICA')
+                    env.MAX_REPLICA = getEnvVar('MAX_REPLICA')
+                    env.SERVICE_TYPE = getEnvVar('SERVICE_TYPE')
+                    env.SERVICE_PATH = getEnvVar('SERVICE_PATH')
+                    env.RELEASE_TAG = getEnvVar('RELEASE_TAG')
+                    env.DOCKER_PROJECT_NAMESPACE = getEnvVar('DOCKER_PROJECT_NAMESPACE')
+                    env.JENKINS_DOCKER_CREDENTIALS_ID = getEnvVar('JENKINS_DOCKER_CREDENTIALS_ID')
+                    env.PROJECT_PATH = getEnvVar('PROJECT_PATH')
+                    env.GITHUB_URL_YAML = "https://raw.githubusercontent.com/airavata-courses/Swishh/${CURRENT_BRANCH}/k8s/kube.yaml"
+                    env.GITHUB_URL_SH = "https://raw.githubusercontent.com/airavata-courses/Swishh/${CURRENT_BRANCH}/k8s/process_file.sh"
+                }
             }
         }
 	
@@ -32,7 +67,7 @@ pipeline {
 			steps{
 				sh """ 
 				cd $WORKSPACE/SessionManagement/
-				docker build -t swishhspring2021/sessionmanagement:latest .
+				docker build -t ${DOCKER_PROJECT_NAMESPACE}/${IMAGE_NAME}:${RELEASE_TAG} .
 				"""
 				
 			}
@@ -40,8 +75,41 @@ pipeline {
 		stage('Artifact Upload'){
 			steps{
 				sh 'docker login -u swishhspring2021 -p Spring@2021'
-				sh 'docker push swishhspring2021/sessionmanagement:latest'
+				sh 'docker push ${DOCKER_PROJECT_NAMESPACE}/${IMAGE_NAME}:${RELEASE_TAG}'
 			}
 		}
+		stage('Deploy') {
+            steps {
+                script {
+                    sshPublisher(
+                        continueOnError: false, failOnError: true,
+                        publishers: [
+                            sshPublisherDesc(
+                                configName: 'swishh_k8s_master',
+                                verbose: true,
+                                transfers: [
+                                    sshTransfer(
+                                        execCommand: """
+                                        [ ! -d "deployment_files" ] && mkdir deployment_files;
+                                        cd deployment_files;
+                                        rm -rf kube.yaml process_file.sh;
+                                        wget ${GITHUB_URL_YAML}
+                                        wget ${GITHUB_URL_SH}
+                                        kubectl delete deployment,services,ingresses,horizontalpodautoscalers -l app=${APP_NAME};
+                                        chmod +x process_file.sh;                           
+                                        ./process_file.sh /home/centos/deployment_files ${APP_NAME} ${DOCKER_PROJECT_NAMESPACE}/${IMAGE_NAME}:${RELEASE_TAG} ${TIMESTAMP} ${PORT} ${TARGET_PORT} ${CONTAINER_PORT} ${REPLICA} ${MAX_REPLICA} ${SERVICE_TYPE} ${SERVICE_PATH};
+                                        rm -rf *.bak*;
+                                        cp -f kube.yaml ../k8-${APP_NAME}.yaml;
+                                        cd ..;
+                                        kubectl apply -f k8-${APP_NAME}.yaml;
+                                        """
+                                    )
+                                ]
+                            )
+                        ]
+                    )
+                }
+            }
+        }
     }
 }
