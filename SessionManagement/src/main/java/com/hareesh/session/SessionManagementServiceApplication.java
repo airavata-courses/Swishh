@@ -9,5 +9,4 @@ public class SessionManagementServiceApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SessionManagementServiceApplication.class, args);
 	}
-
 }
