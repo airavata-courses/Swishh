@@ -16,17 +16,17 @@ spec:
         updateTimestamp: "__TIMESTAMP__"
     spec:
       containers:
-      - name: __APP_NAME__
-        image: __IMAGE__
-        imagePullPolicy: Always
-        ports:
-        - containerPort: __CONTAINER_PORT__
-        resources:
-          requests:
-            cpu: 250m
-          limits:
-            cpu: 500m
-            memory: 2Gi
+        - name: __APP_NAME__
+          image: __IMAGE__
+          imagePullPolicy: Always
+          ports:
+            - containerPort: __CONTAINER_PORT__
+          resources:
+            requests:
+              cpu: 250m
+            limits:
+              cpu: 500m
+              memory: 2Gi
       restartPolicy: Always
 ---
 apiVersion: v1
@@ -39,7 +39,7 @@ spec:
   selector:
     app: __APP_NAME__
   ports:
-    - name:www.swishh.com
+    - name: www.swishh.com
       protocol: TCP
       port: __PORT__
       targetPort: __TARGET_PORT__
@@ -70,7 +70,7 @@ spec:
   minReplicas: __REPLICA__
   maxReplicas: __MAX_REPLICA__
   metrics:
-  - type: Resource
-    resource:
-      name: cpu
-      targetAverageUtilization: 60
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageUtilization: 60
