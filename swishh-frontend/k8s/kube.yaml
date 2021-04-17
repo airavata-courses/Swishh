@@ -39,8 +39,7 @@ spec:
   selector:
     app: __APP_NAME__
   ports:
-    - hostname: www.swishh.com
-      protocol: TCP
+    - protocol: TCP
       port: __PORT__
       targetPort: __TARGET_PORT__
   type: __SERVICE_TYPE__
