@@ -1,5 +1,6 @@
 var express = require('express');
 var bodyParser = require('body-parser');
+const cors = require('cors');
 
 var router = require('./routers/router');
 var formidableMiddleware = require('express-formidable')
