@@ -8,6 +8,9 @@ target/
 !**.svg
 !**.png
 
+
+*.png
+*.jpeg
 ### STS ###
 .apt_generated
 .classpath
