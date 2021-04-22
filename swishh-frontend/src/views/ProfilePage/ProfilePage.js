@@ -89,7 +89,7 @@ export default function ProfilePage(props) {
       "sharewith" : sharewith,
       "fileids" : fileids
     }
-    axios.post('http://localhost:8080/share' , payload,{
+    axios.post('/api/share' , payload,{
     }).then(function (response) {
       setShowShare(true);
       setClassicModal(false)
@@ -114,7 +114,7 @@ export default function ProfilePage(props) {
     if (localStorage.getItem('sessionId') != null) {
 
       setUserName(localStorage.getItem('username'));
-      axios.get('http://localhost:8080/files?username=' + localStorage.getItem('username'))
+      axios.get('/api/files?username=' + localStorage.getItem('username'))
         .then(function (response) {
           console.log(response.data)
           setImages(response.data);

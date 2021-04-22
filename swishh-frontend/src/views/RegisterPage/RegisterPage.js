@@ -51,7 +51,7 @@ export default function RegisterPage(props) {
     const sessionPayload={
       "username": email
     }
-    axios.post('http://localhost:5000/register', payload, {
+    axios.post('/api/register', payload, {
     })
     .then((response) => {
       //add notification
@@ -62,7 +62,7 @@ export default function RegisterPage(props) {
         console.log(error)
     })
 
-    axios.post('http://localhost:8082/session', sessionPayload)
+    axios.post('/api/session', sessionPayload)
     .then((response) => {
       console.log(response.data);
       localStorage.setItem('sessionId', response.data);
