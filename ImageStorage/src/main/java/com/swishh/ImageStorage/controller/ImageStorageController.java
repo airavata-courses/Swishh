@@ -29,6 +29,7 @@ public class ImageStorageController {
 	
 	@GetMapping("/files")
 	public ArrayList<FilesResponse> listUploadedFiles(Model model,String username) throws IOException {
+		System.out.println("username is : "+username);
 		return 	storageService.loadAll(username);
 	}
 

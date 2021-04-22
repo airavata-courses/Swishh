@@ -51,7 +51,7 @@ export default function RegisterPage(props) {
     const sessionPayload={
       "username": email
     }
-    axios.post('http://localhost:5003/register', payload, {
+    axios.post('http://localhost:5000/register', payload, {
     })
     .then((response) => {
       //add notification

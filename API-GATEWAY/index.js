@@ -3,7 +3,7 @@ var bodyParser = require('body-parser');
 const cors = require('cors');
 
 var router = require('./routers/router');
-var formidableMiddleware = require('express-formidable')
+//var formidableMiddleware = require('express-formidable')
 var config = require('./config');
 
 
@@ -13,7 +13,7 @@ var app = express();
 const {app : {port}} = config;
 
 app.use(bodyParser.json());
-app.use(formidableMiddleware());
+//app.use(formidableMiddleware());
 app.use(bodyParser.urlencoded({extended:"True"}));
 
 app.get('/', (req,res) => {

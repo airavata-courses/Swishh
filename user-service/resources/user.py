@@ -20,9 +20,9 @@ class UserRegister(Resource):
     def post(self):
         data = UserRegister.parser.parse_args()
         userid = str(uuid.uuid4())
-
+        print(data)
         if UserModel.find_by_username(data['username']) is not None:
-            return {"message": "A user with this username already exists"}, 400
+            return {"message": "A user with this username already exists"}, 200
 
         while UserModel.find_by_userid(userid) is not None:
             userid = str(uuid.uuid4())
