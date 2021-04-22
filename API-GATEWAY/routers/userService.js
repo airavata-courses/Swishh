@@ -6,7 +6,7 @@ var router = express.Router();
 const { routeURLS: {userService}} = config;
 
 const api = apiAdapter(userService);
-
+//register
 router.post('/register', (req, res) => {
     console.log("in register",req.path,req.body);
     api.post(req.path, req.body).then(resp => {
