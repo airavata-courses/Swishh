@@ -7,7 +7,7 @@ const { routeURLS: {imageStorage}} = config;
 
 const api = apiAdapter(imageStorage);
 
-
+//files
 router.get('/files', (req, res) => {
     api.get(req.path).then(resp => {
         console.log(req.path)
