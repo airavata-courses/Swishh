@@ -47,7 +47,7 @@ export default function LoginPage(props) {
       "username": email
     }
 
-    axios.post('/api/login', payload, {
+    axios.post('http://gateway-service:5000/login', payload, {
     })
     .then((response) => {
         
@@ -60,7 +60,7 @@ export default function LoginPage(props) {
       console.log(error)
     })
 
-    axios.post('/api/session', sessionPayload)
+    axios.post('http://gateway-service:5000/session', sessionPayload)
     .then((response) => {
       console.log(response.data);
       localStorage.setItem('sessionId', response.data);
