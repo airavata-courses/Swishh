@@ -40,7 +40,7 @@ spec:
     app: __APP_NAME__
   ports:
     - protocol: TCP
-      Nodeport:30200
+      nodePort: 30200
       port: __PORT__
       targetPort: __TARGET_PORT__
   type: __SERVICE_TYPE__
