@@ -28,6 +28,7 @@ def login():
     if request.is_json is None:
         return {'message': 'Send data in form of json'}, 400
     data = request.get_json()
+    print(data)
     if data['username'] is None or data['password'] is None:
         return {'message':'Please provide the valid imformation to authenticate'}, 401
     return authentication(data['username'], data['password'])
