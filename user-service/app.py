@@ -53,4 +53,4 @@ api.add_resource(UserRegister,'/register')
 
 if __name__ == "__main__":
     createdb()
-    app.run(port = 5003, debug = False)
+    app.run(port = 5003, host='0.0.0.0', debug = True)

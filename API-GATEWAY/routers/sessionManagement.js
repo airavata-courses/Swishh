@@ -11,21 +11,21 @@ const api = apiAdapter(sessionManagement);
 
 
 router.post('/session', (req, res) => {
-    api.post(req.path).then(resp => {
+    api.post(req.path,req.body).then(resp => {
         res.send(resp.data);
     });
 });
 
 
 router.post('/validate', (req, res) => {
-    api.post(req.path).then(resp => {
+    api.post(req.path,req.body).then(resp => {
         res.send(resp.data);
     });
 });
 
 
 router.post('/invalidate', (req, res) => {
-    api.post(req.path).then(resp => {
+    api.post(req.path,req.body).then(resp => {
         res.send(resp.data);
     });
 });
