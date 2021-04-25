@@ -11,12 +11,16 @@ router.post('/register', (req, res) => {
     console.log("in register",req.path,req.body);
     api.post(req.path, req.body).then(resp => {
         res.send(resp.data);
+    }).catch(function (error){
+        console.log(error);
     });
 });
 
 router.post('/login', (req, res) => {
     api.post(req.path, req.body).then(resp => {
         res.send(resp.data);
+    }).catch(function (error){
+        console.log(error);
     });
 });
 

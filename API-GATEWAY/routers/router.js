@@ -6,7 +6,7 @@ var sessionManagementRouter = require('./sessionManagement');
 
 
 router.use((req, res, next) => {
-    console.log("Called", req.path,req.params);
+    console.log("Called", req.path);
     next()
 });
 
