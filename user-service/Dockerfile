@@ -4,6 +4,9 @@ WORKDIR /userservice
 RUN dir
 RUN pip install -r requirements.txt
 
+RUN touch data.db
+RUN chmod a+rw data.db
+
 EXPOSE 5003
 
 ENTRYPOINT [ "python" ]
