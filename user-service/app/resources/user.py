@@ -19,8 +19,9 @@ class UserRegister(Resource):
 
     def post(self):
         data = UserRegister.parser.parse_args()
+        print("registering user ",data)
         userid = str(uuid.uuid4())
-
+        print("userid ",userid)
         if UserModel.find_by_username(data['username']) is not None:
             return {"message": "A user with this username already exists"}, 400
         
@@ -31,7 +32,8 @@ class UserRegister(Resource):
 
         try:
             user.create_new_user()
-        except:
+        except Exception as e:
+            print(e)
             return {'message': 'An error occured while creating the new user'}, 205
 
         return {'message': "User created successfully."}, 201

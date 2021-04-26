@@ -15,9 +15,11 @@ def search_by_username(username):
 def authentication(username, password):
     try:
         connection = sqlite3.connect('database.db')
+        print("connection established for db")
         connection.row_factory = lambda cursor, row: row[0]
         cursor = connection.cursor()
         query = "SELECT password FROM users WHERE username = ?"
+        print("fecthing details from db")
         result = cursor.execute(query, (username,)).fetchone()
         if result == password:
             return {'message': 'User verified'}, 200
@@ -92,6 +94,7 @@ class UserModel:
         try:
             connection = sqlite3.connect('database.db')
             cursor = connection.cursor()
+            print("Opened connection for writing to db")
             query = "INSERT INTO users VALUES (?, ?, ?)"
             cursor.execute(query, (self.userid, self.username, self.password,))
             connection.commit()

@@ -22,6 +22,7 @@ def index():
 
 @app.route('/login', methods=['POST'])
 def login():
+    print("login for ",request);
     if request.is_json is None:
         return {'message': 'Send data in form of json'}, 400
     data = request.get_json()
