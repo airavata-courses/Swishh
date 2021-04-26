@@ -34,7 +34,7 @@ export default function HeaderLinks(props) {
       console.log("Invalidated token successfully!");
       localStorage.clear();
       window.location.href = '/';
-      axios.post('http://localhost:8082/invalidate', sessionPayload)
+      axios.post('/api/invalidate', sessionPayload)
       .then(function (response) {
         console.log(response.data)
       });
@@ -62,7 +62,7 @@ export default function HeaderLinks(props) {
         formData.append('username',username);
         formData.append("foldername", "");
 
-        axios.post('http://localhost:8080/upload/', formData ,{
+        axios.post('/image/upload/', formData ,{
           headers: {
             'Content-Type': 'multipart/form-data',
           }
