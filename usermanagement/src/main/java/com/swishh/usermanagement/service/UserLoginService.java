@@ -22,7 +22,7 @@ public class UserLoginService {
 		Optional<UserEntity> u = userRepository.findById(user.getUsername());
 		if (u.isPresent()) {
 			System.out.println("User already exists");
-			return new ResponseEntity(HttpStatus.BAD_REQUEST).status(HttpStatus.BAD_REQUEST)
+			return new ResponseEntity(HttpStatus.OK).status(HttpStatus.OK)
 					.body("User with username already exists");
 		}
 		try {
@@ -33,7 +33,7 @@ public class UserLoginService {
 
 		} catch (Exception e) {
 			System.out.println("encountered " + e.getMessage() + " while creating user");
-			return new ResponseEntity(HttpStatus.RESET_CONTENT).status(HttpStatus.RESET_CONTENT)
+			return new ResponseEntity(HttpStatus.OK).status(HttpStatus.OK)
 					.body("An error encountered while registering the user");
 		}
 
@@ -50,7 +50,7 @@ public class UserLoginService {
 		Optional<UserEntity> u = userRepository.findById(user.getUsername());
 		if (!u.isPresent()) {
 			System.out.println("User not registered");
-			return new ResponseEntity(HttpStatus.UNAUTHORIZED).status(HttpStatus.UNAUTHORIZED)
+			return new ResponseEntity(HttpStatus.OK).status(HttpStatus.OK)
 					.body("User not registered. Please register");
 		}
 		try {
@@ -61,14 +61,14 @@ public class UserLoginService {
 			}
 			else {
 				System.out.println("wrong credentaisl");
-				return new ResponseEntity(HttpStatus.UNAUTHORIZED).status(HttpStatus.UNAUTHORIZED)
+				return new ResponseEntity(HttpStatus.OK).status(HttpStatus.OK)
 						.body("User credentials are invalid. PLease enter valid credentials");
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("encountered " + e.getMessage() + " while user login");
-			return new ResponseEntity(HttpStatus.UNAUTHORIZED).status(HttpStatus.UNAUTHORIZED)
+			return new ResponseEntity(HttpStatus.OK).status(HttpStatus.OK)
 					.body("An error occurred while loggin in user");
 		}
 
