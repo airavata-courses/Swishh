@@ -1,11 +1,3 @@
-HELP.md
-target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
-!**.jpeg
-!**.jpg
-!**.svg
-!**.png
-
-**pycache**
+./app/models/__pycache__
+./app/resources/__pycache__
+./app/database.db

@@ -20,10 +20,10 @@ class UserRegister(Resource):
     def post(self):
         data = UserRegister.parser.parse_args()
         userid = str(uuid.uuid4())
-        print(data)
-        if UserModel.find_by_username(data['username']) is not None:
-            return {"message": "A user with this username already exists"}, 200
 
+        if UserModel.find_by_username(data['username']) is not None:
+            return {"message": "A user with this username already exists"}, 400
+        
         while UserModel.find_by_userid(userid) is not None:
             userid = str(uuid.uuid4())
 
@@ -32,7 +32,7 @@ class UserRegister(Resource):
         try:
             user.create_new_user()
         except:
-            return {'message': 'An error occured while creating the new user'}, 500
+            return {'message': 'An error occured while creating the new user'}, 205
 
         return {'message': "User created successfully."}, 201
 
@@ -42,24 +42,21 @@ class User(Resource):
     parser.add_argument('username', type = str, required = False, help = 'Username is optional')
     parser.add_argument('password', type = str, required = False, help = 'Required for update data calls')
 
-    def get(self):
-        data = User.parser.parse_args()
-
-        user = UserModel.find_by_userid(data['userid'])
+    def get(self,userid):
+        user = UserModel.find_by_userid(userid)
         if user is not None:
             return json.dumps(user.__dict__)
         else:
             return {'message': 'Item not found'}, 404
 
-    def delete(self):
-        data = User.parser.parse_args()
-        user = UserModel.find_by_userid(data['userid'])
+    def delete(self, userid):
+        user = UserModel.find_by_userid(userid)
         if user is None:
             return {'message': 'User doesnt exists to delete'}
         try:
             user.delete()
         except:
-            return {'message': 'An error occured while deleting the user'}, 500
+            return {'message': 'An error occured while deleting the user'}, 205
         return {'message': 'User Deleted'}
 
     def put(self):
@@ -71,6 +68,6 @@ class User(Resource):
         try:
             user.update_password(data['password'])
         except:
-            return {"message": "An error occured while updating the user"}, 500
-
+            return {"message": "An error occured while updating the user"}, 205
+        
         return json.dumps(user.__dict__)

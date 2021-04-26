@@ -3,10 +3,8 @@ from flask_cors import CORS
 from flask_restful import Api
 from flask_jwt import JWT
 from flask import request
-# from security import authenticate, identity
 from resources.user import UserRegister, User, getUserDetailsByName
-from models.user import search_by_username, authentication
-from create_tables import createdb
+from models.user import search_by_username, authentication, search_by_username
 
 app = Flask(__name__)
 
@@ -22,13 +20,11 @@ def index():
         return 'Logged in as {}'.format(userid)
     return 'You are not logged in.'
 
-
 @app.route('/login', methods=['POST'])
 def login():
     if request.is_json is None:
         return {'message': 'Send data in form of json'}, 400
     data = request.get_json()
-    print(data)
     if data['username'] is None or data['password'] is None:
         return {'message':'Please provide the valid imformation to authenticate'}, 401
     return authentication(data['username'], data['password'])
@@ -41,6 +37,12 @@ def getUserDetails():
     data = request.get_json()
     return getUserDetailsByName(data['username'])
 
+@app.route('/userlist', methods=['GET'])
+def getUsersList():
+    querystr = str(request.args.get('query_string'))
+    return search_by_username(querystr)
+
+
 
 @app.route('/logout', methods=['GET'])
 def logout():
@@ -52,5 +54,4 @@ api.add_resource(User,'/user')
 api.add_resource(UserRegister,'/register')
 
 if __name__ == "__main__":
-    createdb()
-    app.run(port = 5003, host='0.0.0.0', debug = True)
+    app.run(debug = True)

@@ -9,8 +9,9 @@ def getTimeStamp(){
 pipeline {
 
     agent any
-	triggers {
-        pollSCM '* * * * *'
+
+    triggers {
+        pollSCM '*/15 * * * *'
     }
 
     environment {
@@ -41,45 +42,49 @@ pipeline {
                 }
             }
         }
-	
-		stage('Build App')
-          {
-            steps
-             {
-		     sh """ 
-		     cd $WORKSPACE/user-service/
-			 virtualenv venv
-			 . venv/bin/activate 
-			 pip install -r requirements.txt
-		     ls -ltr
-		     """
+
+        stage('CleanUp') {
+            steps {
+                script{
+                    sh '''
+                    docker rmi $(docker images -f 'dangling=true' -q) || true
+                    docker rmi $(docker images | sed 1,2d | awk '{print $3}') || true
+                    ${DOCKER_PROJECT_NAMESPACE}/${IMAGE_NAME}:${RELEASE_TAG} || true
+                    '''
+                }
             }
-          }
-		stage('Dockerising'){
-			steps{
-				//sh 'docker login -u swishhspring2021 -p Spring@2021'
-				sh """ 
-				cd $WORKSPACE/user-service/
-				docker build -t ${DOCKER_PROJECT_NAMESPACE}/${IMAGE_NAME}:${RELEASE_TAG} .
-				"""
-				
-			}
-		}
-		stage('Artifact Upload'){
-			steps{
-				sh 'cat /var/lib/jenkins/.ssh/id_rsa.pub'
-				sh 'docker login -u swishhspring2021 -p Spring@2021'
-				sh 'docker push ${DOCKER_PROJECT_NAMESPACE}/${IMAGE_NAME}:${RELEASE_TAG}'
-			}
-		}
-		stage('Deploy') {
+        }
+
+        stage('Build') {
+            steps {
+                script{
+                    sh '''docker build -t ${DOCKER_PROJECT_NAMESPACE}/${IMAGE_NAME}:${RELEASE_TAG} -f ${PROJECT_PATH}/Dockerfile ${PROJECT_PATH}/.'''
+                }
+            }
+        }
+
+        stage('Publish') {
+            steps {
+                script{
+                    withCredentials([usernamePassword(credentialsId: "${JENKINS_DOCKER_CREDENTIALS_ID}", usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWD')]){
+                        sh '''
+                        echo $DOCKER_PASSWD | docker login --username ${DOCKER_USERNAME} --password-stdin
+                        docker push ${DOCKER_PROJECT_NAMESPACE}/${IMAGE_NAME}:${RELEASE_TAG}
+                        docker logout
+                        '''
+                    }
+                }
+            }
+        }
+
+        stage('Deploy') {
             steps {
                 script {
                     sshPublisher(
                         continueOnError: false, failOnError: true,
                         publishers: [
                             sshPublisherDesc(
-                                configName: 'swishh_k8s_master',
+                                configName: 'ssh_k8_master',
                                 verbose: true,
                                 transfers: [
                                     sshTransfer(
