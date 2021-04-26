@@ -5,7 +5,7 @@ const config = {
     },
 
     routeURLS: {
-      userService : "http://userservice:5004",
+      userService : "http://usermanage-service:5004",
       imageStorage : "http://imagestorage-service:8081",
       sessionManagement : "http://sessionservice-service:8082"
     }
