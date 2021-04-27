@@ -9,8 +9,8 @@ const api = apiAdapter(imageStorage);
 
 //files
 router.get('/files', (req, res) => {
-    api.get(req.path).then(resp => {
-        console.log(req.path)
+    api.get(req.path,req.params).then(resp => {
+        console.log(req.params)
         res.send(resp.data);
     }).catch(function (error){
         console.log(error);
