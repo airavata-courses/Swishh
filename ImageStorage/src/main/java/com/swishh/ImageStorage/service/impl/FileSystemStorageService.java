@@ -90,6 +90,7 @@ public class FileSystemStorageService implements StorageService {
 						.toAbsolutePath();
 				System.out.println(destinationFile.toString());
 				File creatFile = new File(destinationFile.toString());
+				System.out.println(creatFile.getAbsolutePath()+" files :"+creatFile.exists());
 				if (!creatFile.exists()) {
 				
 					File uploaddir = new File(
