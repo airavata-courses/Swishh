@@ -11,14 +11,12 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.swishh.ImageStorage.exception.StorageException;
 import com.swishh.ImageStorage.exception.StorageFileNotFoundException;
-import com.swishh.ImageStorage.models.ImagestoreRequest;
 import com.swishh.ImageStorage.models.request.FilesResponse;
 import com.swishh.ImageStorage.service.impl.FileSystemStorageService;
 
@@ -36,11 +34,13 @@ public class ImageStorageController {
 	}
 
 	@PostMapping("/upload")
-	public ResponseEntity handleFileUpload(@RequestBody ImagestoreRequest request){
+	public ResponseEntity handleFileUpload(@RequestParam("file") MultipartFile[] file,
+			@RequestParam("username") String username,
+			@RequestParam("foldername") String foldername){
 
 		try{
-			System.out.println(request.getFile().length+" "+request.getUsername());
-			storageService.store(request.getFile(),request.getUsername(),request.getFoldername());
+			System.out.println("username is "+username);
+			storageService.store(file,username,foldername);
 		}
 		catch(StorageException E) {
 			ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
