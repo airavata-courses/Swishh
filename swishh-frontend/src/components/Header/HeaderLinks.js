@@ -43,6 +43,7 @@ export default function HeaderLinks(props) {
     const handleChange = event => {
       const fileUploaded = event.target.files[0];
       const username = localStorage.getItem('username');
+      console.log(username);
       // const sessionId = localStorage.getItem('sessionId');
 
       // const sessionPayload = {
