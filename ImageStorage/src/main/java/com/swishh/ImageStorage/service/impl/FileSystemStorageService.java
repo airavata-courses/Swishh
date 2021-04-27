@@ -91,10 +91,12 @@ public class FileSystemStorageService implements StorageService {
 				System.out.println(destinationFile.toString());
 				File creatFile = new File(destinationFile.toString());
 				if (!creatFile.exists()) {
+				
 					File uploaddir = new File(
 							creatFile.getAbsolutePath().substring(0, creatFile.getAbsolutePath().lastIndexOf(File.separatorChar)));
 					uploaddir.mkdirs();
 					creatFile.createNewFile();
+					System.out.println(creatFile.getAbsolutePath()+" files :"+creatFile.exists());
 				}
 				System.out.println(destinationFile);
 				gcloudUploadUtil.fileUpload(file, filename);
