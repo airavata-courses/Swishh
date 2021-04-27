@@ -108,6 +108,7 @@ public class FileSystemStorageService implements StorageService {
 			saveFileIdsToDB(userId, filesList);
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
+			e.printStackTrace();
 			throw new StorageException("Failed to store file.", e);
 		}
 	}
