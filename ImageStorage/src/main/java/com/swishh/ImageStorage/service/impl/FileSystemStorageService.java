@@ -100,7 +100,7 @@ public class FileSystemStorageService implements StorageService {
 					System.out.println(creatFile.getAbsolutePath()+" files :"+creatFile.exists());
 				}
 				System.out.println(destinationFile);
-				gcloudUploadUtil.fileUpload(file, filename);
+				//gcloudUploadUtil.fileUpload(file, filename);
 				try (InputStream inputStream = file.getInputStream()) {
 					Files.copy(inputStream, destinationFile, StandardCopyOption.REPLACE_EXISTING);
 				}
