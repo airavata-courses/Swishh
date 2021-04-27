@@ -7,7 +7,7 @@ target/
 !**.jpg
 !**.svg
 !**.png
-
+!**.class
 
 *.png
 *.jpeg
