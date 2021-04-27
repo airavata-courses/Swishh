@@ -3,7 +3,14 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+!**.jpeg
+!**.jpg
+!**.svg
+!**.png
 
+
+*.png
+*.jpeg
 ### STS ###
 .apt_generated
 .classpath
@@ -31,3 +38,4 @@ build/
 
 ### VS Code ###
 .vscode/
+upload-dir/
