@@ -1,1 +1,0 @@
-This folder contains info about jmeter artifcats
