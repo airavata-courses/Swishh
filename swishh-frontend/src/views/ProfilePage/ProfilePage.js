@@ -114,7 +114,7 @@ export default function ProfilePage(props) {
     if (localStorage.getItem('sessionId') != null) {
 
       setUserName(localStorage.getItem('username'));
-      axios.get('/api/files?username=' + localStorage.getItem('username'))
+      axios.get('/image/files?username=' + localStorage.getItem('username'))
         .then(function (response) {
           console.log(response.data)
           setImages(response.data);
