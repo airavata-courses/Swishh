@@ -10,7 +10,7 @@ pipeline {
 
     agent any
 	triggers {
-        pollSCM '*/15 * * * *'
+        pollSCM '* * * * *'
     }
 
     environment {
@@ -44,7 +44,7 @@ pipeline {
                         continueOnError: false, failOnError: true,
                         publishers: [
                             sshPublisherDesc(
-                                configName: 'ssh_k8_master',
+                                configName: 'swishh_k8s_master',
                                 verbose: true,
                                 transfers: [
                                     sshTransfer(
