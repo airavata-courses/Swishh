@@ -83,8 +83,9 @@ public class FileSystemStorageService implements StorageService {
 				filedao.setFileids(filename);
 				filename+="."+fileExtension;
 				
+				File somefile=new File("Som.txt");
 				
-				
+				System.out.println(somefile.getAbsolutePath());
 				Path destinationFile = uploaddirPath.resolve(Paths.get(filename)).normalize()
 						.toAbsolutePath();
 				System.out.println(destinationFile.toString());
@@ -103,6 +104,7 @@ public class FileSystemStorageService implements StorageService {
 			}
 			saveFileIdsToDB(userId, filesList);
 		} catch (IOException e) {
+			System.out.println(e.getMessage());
 			throw new StorageException("Failed to store file.", e);
 		}
 	}
@@ -117,7 +119,7 @@ public class FileSystemStorageService implements StorageService {
 		ArrayList<byte[]> filesList = new ArrayList<byte[]>();
 		ArrayList<FilesResponse> fileResponseList=new ArrayList<FilesResponse>();
 		File dir = new File(filePath.toString());
-		System.out.println("dir :"+dir.getAbsolutePath());
+		System.out.println("dir :"+dir.getAbsolutePath()+ " "+dir.exists());
 		try {
 			if (dir.exists() && dir.isDirectory()) {
 				for (File file : dir.listFiles()) {
