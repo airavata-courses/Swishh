@@ -87,6 +87,7 @@ public class FileSystemStorageService implements StorageService {
 				
 				Path destinationFile = uploaddirPath.resolve(Paths.get(filename)).normalize()
 						.toAbsolutePath();
+				System.out.println(destinationFile.toString());
 				File creatFile = new File(destinationFile.toString());
 				if (!creatFile.exists()) {
 					File uploaddir = new File(
@@ -112,9 +113,11 @@ public class FileSystemStorageService implements StorageService {
 		String userId=userIdUtil.getUserIdfromUserName(username);
 		System.out.println(userId+" found");
 		Path filePath=Paths.get(fileUploadDir+File.separator+userId);
+		System.out.println(filePath.toString());
 		ArrayList<byte[]> filesList = new ArrayList<byte[]>();
 		ArrayList<FilesResponse> fileResponseList=new ArrayList<FilesResponse>();
 		File dir = new File(filePath.toString());
+		System.out.println("dir :"+dir.getAbsolutePath());
 		try {
 			if (dir.exists() && dir.isDirectory()) {
 				for (File file : dir.listFiles()) {
