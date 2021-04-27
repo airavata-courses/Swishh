@@ -62,7 +62,7 @@ export default function HeaderLinks(props) {
         formData.append("file", fileUploaded);
         formData.append('username',username);
         formData.append("foldername", "");
-
+        console.log(formData);
         axios.post('/image/upload/', formData ,{
           headers: {
             'Content-Type': 'multipart/form-data',
