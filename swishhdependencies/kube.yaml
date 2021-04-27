@@ -20,8 +20,7 @@ spec:
         image: __IMAGE__
         imagePullPolicy: Always
         ports:
-        - containerPort: 5672
-        - containerPort: 15672
+        - containerPort: 3306
         resources:
           requests:
             cpu: 300m
@@ -41,13 +40,9 @@ spec:
     app: __APP_NAME__
   ports:
     - protocol: TCP
-      name: "5672"
-      port: 5672
-      targetPort: 5672
-    - protocol: TCP
-      name: "15672"
-      port: 15672
-      targetPort: 15672
+      name: "3306"
+      port: 3306
+      targetPort: 3306
   type: __SERVICE_TYPE__
 ---
 apiVersion: extensions/v1beta1
@@ -59,7 +54,7 @@ metadata:
 spec:
   backend:
     serviceName: __APP_NAME__-service
-    servicePort: http-port
+    servicePort: 3306
 ---
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
