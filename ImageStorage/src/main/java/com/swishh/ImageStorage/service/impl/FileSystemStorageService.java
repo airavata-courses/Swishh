@@ -61,7 +61,7 @@ public class FileSystemStorageService implements StorageService {
 
 	@Override
 	public void store(MultipartFile[] files,String username,String folder) {
-		
+		System.out.println("---------------upload files method starts--------------------");
 		try {
 			String userId=userIdUtil.getUserIdfromUserName(username);
 			List<FilesDao> filesList=new ArrayList<FilesDao>();
@@ -106,6 +106,7 @@ public class FileSystemStorageService implements StorageService {
 				}
 			}
 			saveFileIdsToDB(userId, filesList);
+			System.out.println("---------------Upload files method ends--------------------");
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
@@ -115,6 +116,7 @@ public class FileSystemStorageService implements StorageService {
 
 	@Override
 	public ArrayList<FilesResponse> loadAll(String username) throws IOException {
+		System.out.println("---------------Get files method starts--------------------");
 		System.out.println(username);
 		String userId=userIdUtil.getUserIdfromUserName(username);
 		System.out.println(userId+" found");
@@ -127,7 +129,7 @@ public class FileSystemStorageService implements StorageService {
 		try {
 			if (dir.exists() && dir.isDirectory()) {
 				for (File file : dir.listFiles()) {
-					System.out.println(file.toString()+" "+file.getAbsolutePath());
+					System.out.println("getting files from "+file.toString()+" "+file.getAbsolutePath());
 					byte[] filear = Files.readAllBytes(file.toPath());
 					filesList.add(filear);
 					FilesResponse filesResponse=new FilesResponse();
@@ -139,7 +141,7 @@ public class FileSystemStorageService implements StorageService {
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
-
+		System.out.println("---------------Get files method ends--------------------");
 		return fileResponseList;
 
 	}
