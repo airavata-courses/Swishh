@@ -78,7 +78,7 @@ pipeline {
 				sh 'docker push ${DOCKER_PROJECT_NAMESPACE}/${IMAGE_NAME}:${RELEASE_TAG}'
 			}
 		}
-		stage('Deploy') {
+		stage('Deploy-blue') {
             steps {
                 script {
                     sshPublisher(
@@ -93,6 +93,40 @@ pipeline {
                                         [ ! -d "deployment_files" ] && mkdir deployment_files;
                                         cd deployment_files;
                                         rm -rf kube.yaml process_file.sh;
+                                        wget ${GITHUB_URL_YAML}
+                                        wget ${GITHUB_URL_SH}
+                                        kubectl delete deployment,services,ingresses,horizontalpodautoscalers -l app=${APP_NAME};
+                                        chmod +x process_file.sh;                           
+                                        ./process_file.sh /home/centos/deployment_files ${APP_NAME} ${DOCKER_PROJECT_NAMESPACE}/${IMAGE_NAME}:${RELEASE_TAG} ${TIMESTAMP} ${PORT} ${TARGET_PORT} ${CONTAINER_PORT} ${REPLICA} ${MAX_REPLICA} ${SERVICE_TYPE} ${SERVICE_PATH};
+                                        rm -rf *.bak*;
+                                        cp -f kube.yaml ../k8-${APP_NAME}.yaml;
+                                        cd ..;
+                                        kubectl apply -f k8-${APP_NAME}.yaml;
+                                        """
+                                    )
+                                ]
+                            )
+                        ]
+                    )
+                }
+            }
+        }
+		stage('Deploy-Green') {
+            steps {
+                script {
+                    sshPublisher(
+                        continueOnError: false, failOnError: true,
+                        publishers: [
+                            sshPublisherDesc(
+                                configName: 'swishh_k8s_node2',
+                                verbose: true,
+                                transfers: [
+                                    sshTransfer(
+                                        execCommand: """
+                                        [ ! -d "deployment_files" ] && mkdir deployment_files;
+                                        cd deployment_files;
+                                        rm -rf kube.yaml process_file.sh;
+										oc login -u admin -p admin;
                                         wget ${GITHUB_URL_YAML}
                                         wget ${GITHUB_URL_SH}
                                         kubectl delete deployment,services,ingresses,horizontalpodautoscalers -l app=${APP_NAME};

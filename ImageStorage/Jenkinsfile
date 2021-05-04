@@ -125,7 +125,7 @@ pipeline {
                         continueOnError: false, failOnError: true,
                         publishers: [
                             sshPublisherDesc(
-                                configName: 'swishh_-k8s_node2',
+                                configName: 'swishh_k8s_node2',
                                 verbose: true,
                                 transfers: [
                                     sshTransfer(

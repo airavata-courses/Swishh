@@ -34,7 +34,7 @@ export default function HeaderLinks(props) {
       console.log("Invalidated token successfully!");
       localStorage.clear();
       window.location.href = '/';
-      axios.post('/api/invalidate', sessionPayload)
+      axios.post('http://localhost:8082/invalidate', sessionPayload)
       .then(function (response) {
         console.log(response.data)
       });
@@ -43,7 +43,6 @@ export default function HeaderLinks(props) {
     const handleChange = event => {
       const fileUploaded = event.target.files[0];
       const username = localStorage.getItem('username');
-      console.log(username);
       // const sessionId = localStorage.getItem('sessionId');
 
       // const sessionPayload = {
@@ -62,8 +61,8 @@ export default function HeaderLinks(props) {
         formData.append("file", fileUploaded);
         formData.append('username',username);
         formData.append("foldername", "");
-        console.log(formData);
-        axios.post('/image/upload', formData ,{
+
+        axios.post('http://localhost:8080/upload/', formData ,{
           headers: {
             'Content-Type': 'multipart/form-data',
           }
